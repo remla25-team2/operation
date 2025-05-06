@@ -1,31 +1,50 @@
 
-#A1
+## Repositories
 
---Daptardar, Akshay--
+- **Operation**  
+  https://github.com/remla25-team2/operation/
+
+- **App**  
+  https://github.com/remla25-team2/app/  
+
+- **Model-Service**  
+  https://github.com/remla25-team2/model-service/  
+
+- **Model-Training**  
+  https://github.com/remla25-team2/model-training/  
+
+- **lib-ml**  
+  https://github.com/remla25-team2/lib-ml/ 
+
+- **lib-version**  
+  https://github.com/remla25-team2/lib-version/  
+
+## A1
+-- **Daptardar, Akshay**--
 
 Created PR:
 
 Approved PR:
 
---Kravcevs, Ivans--
+--**Kravcevs, Ivans**--
 
 Created PR:
 
 Approved PR:
 
---Mangos, Angelos--
+--**Mangos, Angelos**--
 
 Created PR:
 
 Approved PR:
 
---Tomur, Devin--
+--**Tomur, Devin**--
 
 Created PR:
 
 Approved PR:
 
---Blommestijn, Marvin--
+--**Blommestijn, Marvin**--
 
 Created PR: 
 
