@@ -5,10 +5,10 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./app-data:/app/data #not used for now
+      - ./app-data:/app/data
     environment:
-      - ENV=production #not used for now
-
+      - ENV=production
+      - MODEL_SERVICE_URL=http://model-service:5001
     depends_on:
       - model-service
 
