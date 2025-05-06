@@ -1,30 +1,9 @@
-
-## Repositories
-
-- **Operation**  
-  https://github.com/remla25-team2/operation/
-
-- **App**  
-  https://github.com/remla25-team2/app/  
-
-- **Model-Service**  
-  https://github.com/remla25-team2/model-service/  
-
-- **Model-Training**  
-  https://github.com/remla25-team2/model-training/  
-
-- **lib-ml**  
-  https://github.com/remla25-team2/lib-ml/ 
-
-- **lib-version**  
-  https://github.com/remla25-team2/lib-version/  
-
 ## A1
 -- **Daptardar, Akshay**--
 
-Created PR:
+Created PR: https://github.com/remla25-team2/model-training/pull/1
 
-Approved PR:
+Approved PR: https://github.com/remla25-team2/lib-ml/pull/2
 
 --**Kravcevs, Ivans**--
 
@@ -40,9 +19,9 @@ Approved PR:
 
 --**Tomur, Devin**--
 
-Created PR:
+Created PR: https://github.com/remla25-team2/lib-ml/pull/2
 
-Approved PR:
+Approved PR: https://github.com/remla25-team2/model-training/pull/1
 
 --**Blommestijn, Marvin**--
 
