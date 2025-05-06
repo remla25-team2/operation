@@ -13,9 +13,9 @@ Approved PR: https://github.com/remla25-team2/app/pull/2
 
 --**Mangos, Angelos**--
 
-Created PR:
+Created PR: https://github.com/remla25-team2/lib-version/pull/2
 
-Approved PR:
+Approved PR: 
 
 --**Tomur, Devin**--
 
