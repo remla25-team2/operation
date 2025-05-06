@@ -25,13 +25,6 @@ Approved PR: https://github.com/remla25-team2/model-training/pull/1
 
 --**Blommestijn, Marvin**--
 
-Created PR: 
+Created PR: https://github.com/remla25-team2/model-service/pull/1
 
-[https://github.com/remla24-team-01/operation/pull/13](https://github.com/remla25-team2/app/pull/2)
-
-https://github.com/remla25-team2/model-service/pull/1
-
-
-Approved PR: 
-
-[https://github.com/remla24-team-01/lib/pull/7](https://github.com/remla25-team2/app/pull/1)
+Approved PR: [https://github.com/remla24-team-01/lib/pull/7](https://github.com/remla25-team2/app/pull/1)
