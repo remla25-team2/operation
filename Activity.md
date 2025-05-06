@@ -35,5 +35,3 @@ https://github.com/remla25-team2/model-service/pull/1
 Approved PR: 
 
 [https://github.com/remla24-team-01/lib/pull/7](https://github.com/remla25-team2/app/pull/1)
-
-Mainly focused on model-service and app. 
