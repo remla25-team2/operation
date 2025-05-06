@@ -7,9 +7,9 @@ Approved PR: https://github.com/remla25-team2/lib-ml/pull/2
 
 --**Kravcevs, Ivans**--
 
-Created PR:
+Created PR: https://github.com/remla25-team2/app/pull/1
 
-Approved PR:
+Approved PR: https://github.com/remla25-team2/app/pull/2
 
 --**Mangos, Angelos**--
 
