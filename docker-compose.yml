@@ -1,5 +1,4 @@
 version: '3.8'
-
 services:
   app:
     image: ghcr.io/remla25-team2/app:latest
@@ -9,4 +8,12 @@ services:
       - ./app-data:/app/data #not used for now
     environment:
       - ENV=production #not used for now
+
+    depends_on:
+      - model-service
+
+  model-service:
+    image: ghcr.io/remla25-team2/model-service:latest
+    ports:
+      - "5001:5001"
     restart: on-failure
