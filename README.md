@@ -13,28 +13,28 @@ The application frontend can be accessed at ```localhost:5000``` url.
 ## Repositories
 
 - **Operation**  
-  Repo link: https://github.com/remla25-team2/operation/
-  A1 tag:
+  - Repo link: https://github.com/remla25-team2/operation/
+  - A1 tag:
   
 - **App**  
-  Repo link: https://github.com/remla25-team2/app/
-  A1 tag: https://github.com/remla25-team2/app/releases/tag/a1
+  - Repo link: https://github.com/remla25-team2/app/
+  - A1 tag: https://github.com/remla25-team2/app/releases/tag/a1
 
 - **Model-Service**  
-  https://github.com/remla25-team2/model-service/  
-  A1 tag:
+  - Repo link: https://github.com/remla25-team2/model-service/  
+  - A1 tag:
   
 - **Model-Training**  
-  https://github.com/remla25-team2/model-training/  
-  A1 tag:
+  - Repo link: https://github.com/remla25-team2/model-training/  
+  - A1 tag:
   
 - **lib-ml**  
-  https://github.com/remla25-team2/lib-ml/ 
-  A1 tag:
+  - Repo link: https://github.com/remla25-team2/lib-ml/ 
+  - A1 tag:
   
 - **lib-version**  
-  https://github.com/remla25-team2/lib-version/  
-  A1 tag:
+  - Repo link: https://github.com/remla25-team2/lib-version/  
+  - A1 tag:
   
 ### Comments for A1
 
