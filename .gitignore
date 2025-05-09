@@ -1,0 +1,78 @@
+# ---- Vagrant ----
+.vagrant/
+*.box
+
+# VirtualBox logs
+*.log
+*.vbox
+*.vbox-prev
+*.vdi
+*.vmdk
+*.vmsd
+*.vmware*
+*.nvram
+*.vmx
+*.vagrant
+
+# Vagrant dotfiles
+.vagrant.d/
+
+# ---- Ansible ----
+# Vault password files
+.vault_pass.txt
+*.retry
+*.secret
+*.vault
+
+# Ansible roles downloaded with ansible-galaxy
+roles/
+
+# Local environment files
+.env
+.env.*
+
+# SSH keys (if generated locally)
+*.pem
+*.key
+id_rsa*
+.ssh/
+
+# ---- Kubernetes ----
+# Kubernetes output files, e.g., from `kubectl get ... -o yaml > ...`
+*.yaml~
+*.yml~
+*.bak
+*.tmp
+
+# Helm (if used)
+charts/
+*.tgz
+*.lock
+
+# Kustomize (if used)
+.kustomize/
+
+# ---- General ----
+*.swp
+*~
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
+*.pyo
+*.log
+*.out
+*.pid
+*.pidfile
+*.sock
+
+# IDEs
+.vscode/
+.idea/
+*.iml
+
+# Terraform (in case it's used alongside)
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+*.tfvars
