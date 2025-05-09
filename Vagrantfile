@@ -17,12 +17,12 @@ Vagrant.configure("2") do |config|
       vb.cpus = VM_CPUS_CTRL
     end
 
-    ctrl.vm.provision 'ansible' do |ansible|
+    ctrl.vm.provision 'general', type: 'ansible' do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.playbook = "provision/general.yml"
     end
 
-    ctrl.vm.provision 'ansible' do |ansible|
+    ctrl.vm.provision 'ctrl', type: 'ansible' do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.playbook = "provision/ctrl.yml"
     end
@@ -37,12 +37,12 @@ Vagrant.configure("2") do |config|
         vb.memory = VM_MEMORY_NODE
         vb.cpus = VM_CPUS_NODE
       end
-      node.vm.provision 'ansible' do |ansible|
+      node.vm.provision 'general', type: 'ansible' do |ansible|
         ansible.compatibility_mode = "2.0"
         ansible.playbook = "provision/general.yml"
       end
   
-      node.vm.provision 'ansible' do |ansible|
+      node.vm.provision 'node', type: 'ansible' do |ansible|
         ansible.compatibility_mode = "2.0"
         ansible.playbook = "provision/node.yml"
       end
