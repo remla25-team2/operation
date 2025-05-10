@@ -1,3 +1,58 @@
 - hosts: all
   become: yes
   tasks:
+    - name: Add SSH public key to authorized_keys
+      ansible.posix.authorized_key:
+        user: vagrant
+        state: present
+        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    
+    - name: Disable swap
+      ansible.builtin.shell: swapoff -a
+
+    - name: Remove swap entry from /etc/fstab
+      ansible.builtin.lineinfile:
+        path: /etc/fstab
+        regexp: '^\s*[^#]+\s+swap\s+'
+        state: absent
+    
+    - name: Ensure overlay and br_netfilter are loaded at boot
+      ansible.builtin.copy:
+        dest: /etc/modules-load.d/k8s.conf
+        content: |
+          overlay
+          br_netfilter
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Load br_netfilter module now
+      ansible.builtin.modprobe:
+        name: br_netfilter
+        state: present
+
+    - name: Load overlay module now
+      ansible.builtin.modprobe:
+        name: overlay
+        state: present
+
+    - name: Enable net.ipv4.ip_forward
+      ansible.builtin.sysctl:
+        name: net.ipv4.ip_forward
+        value: '1'
+        state: present
+        reload: yes
+
+    - name: Enable net.bridge.bridge-nf-call-iptables
+      ansible.builtin.sysctl:
+        name: net.bridge.bridge-nf-call-iptables
+        value: '1'
+        state: present
+        reload: yes
+
+    - name: Enable net.bridge.bridge-nf-call-ip6tables
+      ansible.builtin.sysctl:
+        name: net.bridge.bridge-nf-call-ip6tables
+        value: '1'
+        state: present
+        reload: yes
