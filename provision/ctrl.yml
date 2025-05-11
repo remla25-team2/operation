@@ -1,3 +1,61 @@
 - hosts: all
   become: yes
   tasks:
+    - name: Check if Kubernetes conf file already exists
+      ansible.builtin.stat:
+        path: /etc/kubernetes/admin.conf
+      register: kubeconfig
+
+    - name: Initialize Kubernetes cluster with kubeadm init
+      ansible.builtin.command: >
+        kubeadm init
+        --apiserver-advertise-address=192.168.56.100
+        --node-name=ctrl
+        --pod-network-cidr=10.244.0.0/16
+      when: not kubeconfig.stat.exists
+
+    - name: Create .kube directory 
+      ansible.builtin.file:
+        path: /home/vagrant/.kube
+        state: directory
+        owner: vagrant
+        group: vagrant
+        mode: '0755'
+      when: not kubeconfig.stat.exists
+
+    - name: Copy admin.conf for vagrant user
+      ansible.builtin.copy:
+        src: /etc/kubernetes/admin.conf
+        dest: /home/vagrant/.kube/config
+        owner: vagrant
+        group: vagrant
+        mode: '0644'
+        remote_src: yes
+      when: not kubeconfig.stat.exists
+
+    - name: Copy kubeconfig for host
+      ansible.builtin.fetch:
+        src: /etc/kubernetes/admin.conf
+        dest: ./kubeconfig
+        flat: yes
+      when: not kubeconfig.stat.exists
+
+    - name: Download kube-flannel.yml
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+        dest: /tmp/kube-flannel.yml
+        mode: '0644'
+      when: not kubeconfig.stat.exists
+
+    - name: Insert --iface=eth1 after --ip-masq in kube-flannel.yml
+      ansible.builtin.lineinfile:
+        path: /tmp/kube-flannel.yml
+        insertafter: '^\s*- --ip-masq$'
+        line: '        - --iface=eth1'
+      when: not kubeconfig.stat.exists
+
+
+    - name: Apply modified kube-flannel.yml
+      ansible.builtin.command: kubectl apply -f /tmp/kube-flannel.yml
+      become_user: vagrant
+      when: not kubeconfig.stat.exists
