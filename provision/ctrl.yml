@@ -59,3 +59,36 @@
       ansible.builtin.command: kubectl apply -f /tmp/kube-flannel.yml
       become_user: vagrant
       when: not kubeconfig.stat.exists
+
+    - name: Add Helm signing key
+      ansible.builtin.apt_key:
+        url: https://baltocdn.com/helm/signing.asc
+        state: present
+
+    - name: Add Helm repository
+      ansible.builtin.apt_repository:
+        repo: deb https://baltocdn.com/helm/stable/debian/ all main
+        state: present
+        filename: helm
+
+    - name: Update apt cache after adding Helm repository
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Install Helm
+      ansible.builtin.apt:
+        name: helm
+        state: present
+
+    - name: Check if helm-diff plugin is installed
+      ansible.builtin.command: helm plugin list
+      register: helm_plugins
+      changed_when: false
+      become_user: vagrant
+
+    - name: Install helm-diff plugin
+      ansible.builtin.command: helm plugin install https://github.com/databus23/helm-diff
+      become_user: vagrant
+      when: '"diff" not in helm_plugins.stdout'
+
+    
