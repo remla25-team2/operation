@@ -9,11 +9,17 @@ docker-compose up --build
 
 The application frontend can be accessed at ```localhost:5000``` url.
 
+You can also runt the Vagrant Kubernetes setup through:
+```
+vagrant up
+```
+
 
 ## Repositories
 
 - **Operation**  
   - Repo link: https://github.com/remla25-team2/operation/
+  - A2 tag: https://github.com/remla25-team2/operation/releases/tag/a2
   
 - **App**  
   - Repo link: https://github.com/remla25-team2/app/
@@ -34,6 +40,9 @@ The application frontend can be accessed at ```localhost:5000``` url.
 - **lib-version**  
   - Repo link: https://github.com/remla25-team2/lib-version/  
   - A1 tag: https://github.com/remla25-team2/lib-version/releases/tag/a1
+  - A2 tag: https://github.com/remla25-team2/lib-version/releases/tag/a2
   
 ### Comments for A1
 
+### Comments for A2
+All the steps are implemenented and works perfectly on Linux. Windows might have some problems due to Virtualbox network interface not cooperating well with WSL2/Vagrant for the Kubernets API server.
