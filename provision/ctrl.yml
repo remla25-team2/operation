@@ -42,7 +42,7 @@
 
     - name: Download kube-flannel.yml
       ansible.builtin.get_url:
-        url: https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+        url: https://github.com/flannel-io/flannel/releases/download/v0.26.7/kube-flannel.yml
         dest: /tmp/kube-flannel.yml
         mode: '0644'
       when: not kubeconfig.stat.exists
