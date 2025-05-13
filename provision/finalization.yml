@@ -15,9 +15,7 @@
       mode: '0644'
   - name: Install MetalLB CRDs
     become_user: vagrant
-    shell: |
-      kubectl apply -f /tmp/metallb-native-0.14.9.yml --validate=false
-    # register: metallb_output
+    ansible.builtin.command: kubectl apply -f /tmp/metallb-native-0.14.9.yml --validate=false
 
   - name: Wait for MetalLB provisioning
     become_user: vagrant
