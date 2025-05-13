@@ -38,7 +38,7 @@ Approved PR: https://github.com/remla25-team2/lib-ml/pull/2
 
 --**Kravcevs, Ivans**--
 
-Created PR: https://github.com/remla25-team2/app/pull/1
+Created PR: https://github.com/remla25-team2/operation/pull/3
 
 Approved PR: https://github.com/remla25-team2/app/pull/2
 
