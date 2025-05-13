@@ -1,0 +1,137 @@
+---
+- name: Finalize Kubernetes cluster setup
+  hosts: all
+  become: true
+  gather_facts: true
+  vars:
+    ansible_ssh_private_key_file: ../.vagrant/machines/ctrl/virtualbox/private_key
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+    kubectl_cmd: "kubectl --kubeconfig=/home/vagrant/kubeconfig"
+  tasks:
+  - name: Download MetalLB manifest
+    ansible.builtin.get_url:
+      url: https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
+      dest: /tmp/metallb-native-0.14.9.yml
+      mode: '0644'
+  - name: Install MetalLB CRDs
+    become_user: vagrant
+    shell: |
+      kubectl apply -f /tmp/metallb-native-0.14.9.yml --validate=false
+    # register: metallb_output
+
+  - name: Wait for MetalLB provisioning
+    become_user: vagrant
+    ansible.builtin.command:
+      cmd: kubectl wait -n metallb-system -l app=metallb,component=controller --for=condition=ready pod --timeout=60s
+    register: wait_result
+    failed_when: wait_result.rc != 0
+    retries: 5
+    delay: 10
+    until: wait_result.rc == 0
+
+  - name: Create IPAddressPool for MetalLB
+    ansible.builtin.copy:
+      dest: /tmp/metallb-ipaddresspool.yml
+      content: |
+        apiVersion: metallb.io/v1beta1
+        kind: IPAddressPool
+        metadata:
+          name: ippool
+          namespace: metallb-system
+        spec:
+          addresses:
+          - 192.168.56.90-192.168.56.99
+
+  - name: Apply IPAddressPool
+    become_user: vagrant
+    ansible.builtin.command: kubectl apply -f /tmp/metallb-ipaddresspool.yml
+
+  - name: Create L2Advertisement for MetalLB
+    ansible.builtin.copy:
+      dest: /tmp/metallb-l2advertisement.yml
+      content: |
+        apiVersion: metallb.io/v1beta1
+        kind: L2Advertisement
+        metadata:
+          name: example
+          namespace: metallb-system
+        spec:
+          ipAddressPools:
+          - ippool
+
+  - name: Apply L2Advertisement
+    become_user: vagrant
+    ansible.builtin.command: kubectl apply -f /tmp/metallb-l2advertisement.yml
+
+  - name: Add Nginx Ingress Controller Helm repository
+    become_user: vagrant
+    ansible.builtin.command:
+      helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+      helm repo update
+
+  - name: Create Nginx Ingress Values File
+    ansible.builtin.copy:
+      dest: /tmp/ingress-nginx-values.yml
+      content: |
+        controller:
+          service:
+            loadBalancerIP: 192.168.56.90  
+      mode: '0644'
+
+  - name: Install Nginx Ingress Controller
+    become_user: vagrant
+    ansible.builtin.command: 
+      helm install ingress-nginx ingress-nginx/ingress-nginx --values /tmp/ingress-nginx-values.yml --namespace ingress-nginx --create-namespace
+
+  - name: Add helm repo and install Kubernetes dashboard
+    become_user: vagrant
+    ansible.builtin.command:
+      helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
+      helm repo update
+      helm install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --namespace kubernetes-dashboard --create-namespace
+
+  - name: Adding ServiceAccount for admin-user
+    ansible.builtin.copy:
+      dest: /tmp/k8s-dashboard-adminuser.yml
+      content: |
+        apiVersion: v1
+        kind: ServiceAccount
+        metadata:
+          name: admin-user
+          namespace: kubernetes-dashboard
+      mode: '0644'
+
+  - name: Download Istio 1.25.2
+    become_user: vagrant
+    ansible.builtin.get_url:
+      url: https://github.com/istio/istio/releases/download/1.25.2/istio-1.25.2-linux-amd64.tar.gz
+      dest: /home/vagrant/istio-1.25.2-linux-amd64.tar.gz
+      mode: '0644'
+
+  - name: Unpack Istio tar.gz
+    become_user: vagrant
+    ansible.builtin.unarchive:
+      src: /home/vagrant/istio-1.25.2-linux-amd64.tar.gz
+      dest: /home/vagrant/
+      remote_src: yes
+      creates: "/home/vagrant/istio-1.25.2/bin/istioctl"
+
+  - name: Add istioctl to PATH
+    ansible.builtin.lineinfile:
+      path: /home/vagrant/.profile
+      line: 'export PATH="$HOME/istio-1.25.2/bin:$PATH"'
+      create: yes
+      owner: vagrant
+      group: vagrant
+      mode: '0644'
+      regexp: '^export PATH="\$HOME/istio-1.25.2/bin:'
+
+- name: Install Istio using istioctl
+  ansible.builtin.command:
+    cmd: "/home/vagrant/istio-1.25.2/bin/istioctl install -y" 
+  become: yes
+  become_user: vagrant
+  environment:
+    KUBECONFIG: "/home/vagrant/.kube/config"
+  args:
+    chdir: "/home/vagrant/istio-1.25.2"
