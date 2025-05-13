@@ -10,7 +10,8 @@ docker-compose up --build
 The application frontend can be accessed at ```localhost:5000``` url.
 
 You can also runt the Vagrant Kubernetes setup through:
-```vagrant up
+```
+vagrant up
 ```
 
 
