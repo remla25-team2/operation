@@ -34,6 +34,7 @@ The application frontend can be accessed at ```localhost:5000``` url.
 - **lib-version**  
   - Repo link: https://github.com/remla25-team2/lib-version/  
   - A1 tag: https://github.com/remla25-team2/lib-version/releases/tag/a1
+  - A2 tag: https://github.com/remla25-team2/lib-version/releases/tag/a2
   
 ### Comments for A1
 
