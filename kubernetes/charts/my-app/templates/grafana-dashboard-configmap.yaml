@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "my-app.fullname" . }}-grafana-dashboard
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
+data:
+  my-app-dashboard.json: |-
+    {
+      "dashboard": {
+        "panels": [
+          {
+            "type": "gauge",
+            "title": "Active Users",
+            "targets": [
+              { "expr": "active_users" }
+            ]
+          },
+          {
+            "type": "graph",
+            "title": "Request Latency",
+            "targets": [
+              { "expr": "rate(request_latency[5m])" }
+            ]
+          }
+        ]
+      }
+    }

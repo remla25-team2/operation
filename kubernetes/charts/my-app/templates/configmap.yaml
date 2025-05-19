@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "my-app.fullname" . }}-config
+  labels:
+    {{- include "my-app.labels" . | nindent 4 }}
+data:
+  MESSAGE: {{ .Values.config.message | quote }}
