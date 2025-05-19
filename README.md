@@ -20,10 +20,12 @@ vagrant up
 - **Operation**  
   - Repo link: https://github.com/remla25-team2/operation/
   - A2 tag: https://github.com/remla25-team2/operation/releases/tag/a2
+  - A3 tag: https://github.com/remla25-team2/operation/releases/tag/a3
   
 - **App**  
   - Repo link: https://github.com/remla25-team2/app/
   - A1 tag: https://github.com/remla25-team2/app/releases/tag/a1
+  - A3 tag: https://github.com/remla25-team2/app/releases/tag/a3
 
 - **Model-Service**  
   - Repo link: https://github.com/remla25-team2/model-service/  
