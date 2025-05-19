@@ -68,4 +68,8 @@ Created PR: https://github.com/remla25-team2/operation/pull/10
 
 Approved PR: https://github.com/remla25-team2/operation/pull/9
 
+--**Kravcevs, Ivans**--
 
+Created PR: https://github.com/remla25-team2/app/pull/9
+
+Approved PR: https://github.com/remla25-team2/operation/pull/10
