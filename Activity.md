@@ -15,7 +15,7 @@ Approved PR: https://github.com/remla25-team2/app/pull/2
 
 Created PR: [https://github.com/remla25-team2/lib-version/pull/3](https://github.com/remla25-team2/lib-version/pull/3)
 
-Approved PR: 
+Approved PR: https://github.com/remla25-team2/lib-version/pull/3
 
 --**Tomur, Devin**--
 
@@ -73,3 +73,9 @@ Approved PR: https://github.com/remla25-team2/operation/pull/9
 Created PR: https://github.com/remla25-team2/app/pull/9
 
 Approved PR: https://github.com/remla25-team2/operation/pull/10
+
+--**Mangos, Angelos**--
+
+Created PR: [https://github.com/remla25-team2/operation/pull/6](https://github.com/remla25-team2/operation/pull/9)
+
+Approved PR: [https://github.com/remla25-team2/operation/pull/3](https://github.com/remla25-team2/app/pull/9)
