@@ -84,4 +84,4 @@ Approved PR: [https://github.com/remla25-team2/operation/pull/3](https://github.
 
 Created PR: https://github.com/remla25-team2/operation/pull/11 (related to A3)
 
-Approved PR:
+Approved PR: https://github.com/remla25-team2/app/pull/10
