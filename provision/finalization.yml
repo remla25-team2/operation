@@ -5,296 +5,343 @@
   gather_facts: true
   vars:
     ansible_ssh_private_key_file: ../.vagrant/machines/ctrl/virtualbox/private_key
-    ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+    ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
     kubectl_cmd: "kubectl --kubeconfig=/home/vagrant/kubeconfig"
   tasks:
-  - name: Download MetalLB manifest
-    ansible.builtin.get_url:
-      url: https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
-      dest: /tmp/metallb-native-0.14.9.yml
-      mode: '0644'
-  
-  - name: Install MetalLB CRDs
-    become_user: vagrant
-    ansible.builtin.command: kubectl apply -f /tmp/metallb-native-0.14.9.yml --validate=false
+    - name: Download MetalLB manifest
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
+        dest: /tmp/metallb-native-0.14.9.yml
+        mode: "0644"
 
-  - name: Wait for MetalLB provisioning
-    become_user: vagrant
-    ansible.builtin.command:
-      cmd: kubectl wait -n metallb-system -l app=metallb,component=controller --for=condition=ready pod --timeout=60s
-    register: wait_result
-    failed_when: wait_result.rc != 0
-    retries: 5
-    delay: 10
-    until: wait_result.rc == 0
+    - name: Install MetalLB CRDs
+      become_user: vagrant
+      ansible.builtin.command: kubectl apply -f /tmp/metallb-native-0.14.9.yml --validate=false
 
-  - name: Create IPAddressPool for MetalLB
-    ansible.builtin.copy:
-      dest: /tmp/metallb-ipaddresspool.yml
-      content: |
-        apiVersion: metallb.io/v1beta1
-        kind: IPAddressPool
-        metadata:
-          name: ippool
-          namespace: metallb-system
-        spec:
-          addresses:
-          - 192.168.56.90-192.168.56.99
-      mode: '0644'
+    - name: Wait for MetalLB provisioning
+      become_user: vagrant
+      ansible.builtin.command:
+        cmd: kubectl wait -n metallb-system -l app=metallb,component=controller --for=condition=ready pod --timeout=60s
+      register: wait_result
+      failed_when: wait_result.rc != 0
+      retries: 5
+      delay: 10
+      until: wait_result.rc == 0
 
-  - name: Apply IPAddressPool
-    become_user: vagrant
-    ansible.builtin.command: kubectl apply -f /tmp/metallb-ipaddresspool.yml
+    - name: Create IPAddressPool for MetalLB
+      ansible.builtin.copy:
+        dest: /tmp/metallb-ipaddresspool.yml
+        content: |
+          apiVersion: metallb.io/v1beta1
+          kind: IPAddressPool
+          metadata:
+            name: ippool
+            namespace: metallb-system
+          spec:
+            addresses:
+            - 192.168.56.90-192.168.56.99
+        mode: "0644"
 
-  - name: Create L2Advertisement for MetalLB
-    ansible.builtin.copy:
-      dest: /tmp/metallb-l2advertisement.yml
-      content: |
-        apiVersion: metallb.io/v1beta1
-        kind: L2Advertisement
-        metadata:
-          name: example
-          namespace: metallb-system
-        spec:
-          ipAddressPools:
-          - ippool
-      mode: '0644'
+    - name: Apply IPAddressPool
+      become_user: vagrant
+      ansible.builtin.command: kubectl apply -f /tmp/metallb-ipaddresspool.yml
 
-  - name: Apply L2Advertisement
-    become_user: vagrant
-    ansible.builtin.command: kubectl apply -f /tmp/metallb-l2advertisement.yml
+    - name: Create L2Advertisement for MetalLB
+      ansible.builtin.copy:
+        dest: /tmp/metallb-l2advertisement.yml
+        content: |
+          apiVersion: metallb.io/v1beta1
+          kind: L2Advertisement
+          metadata:
+            name: example
+            namespace: metallb-system
+          spec:
+            ipAddressPools:
+            - ippool
+        mode: "0644"
 
-  # Generate self-signed SSL certificates for HTTPS support
-  - name: Generate self-signed SSL certificates
-    ansible.builtin.command:
-      cmd: openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /tmp/tls.key -out /tmp/tls.crt -subj "/CN=*.local/O=Example"
-    args:
-      creates: /tmp/tls.crt
+    - name: Apply L2Advertisement
+      become_user: vagrant
+      ansible.builtin.command: kubectl apply -f /tmp/metallb-l2advertisement.yml
 
-  - name: Add Nginx Ingress Controller Helm repository
-    become_user: vagrant
-    ansible.builtin.command: helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+    # Generate self-signed SSL certificates for HTTPS support
+    - name: Generate self-signed SSL certificates
+      ansible.builtin.command:
+        cmd: openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /tmp/tls.key -out /tmp/tls.crt -subj "/CN=*.local/O=Example"
+      args:
+        creates: /tmp/tls.crt
 
-  - name: Update Helm repositories
-    become_user: vagrant
-    ansible.builtin.command: helm repo update
+    - name: Add Nginx Ingress Controller Helm repository
+      become_user: vagrant
+      ansible.builtin.command: helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
-  - name: Create Nginx Ingress Values File with HTTPS support
-    ansible.builtin.copy:
-      dest: /tmp/ingress-nginx-values.yml
-      content: |
-        controller:
-          service:
-            loadBalancerIP: 192.168.56.90
-          extraArgs:
-            default-ssl-certificate: "ingress-nginx/ingress-tls"
-      mode: '0644'
+    - name: Update Helm repositories
+      become_user: vagrant
+      ansible.builtin.command: helm repo update
 
-  - name: Create namespace for ingress-nginx
-    become_user: vagrant
-    ansible.builtin.command: kubectl create namespace ingress-nginx
-    register: ns_result
-    failed_when:
-      - ns_result.rc != 0
-      - "'already exists' not in ns_result.stderr"
+    - name: Create Nginx Ingress Values File with HTTPS support
+      ansible.builtin.copy:
+        dest: /tmp/ingress-nginx-values.yml
+        content: |
+          controller:
+            service:
+              loadBalancerIP: 192.168.56.90
+            extraArgs:
+              default-ssl-certificate: "ingress-nginx/ingress-tls"
+        mode: "0644"
 
-  # Make sure TLS files have proper permissions
-  - name: Ensure TLS key and cert have proper permissions
-    ansible.builtin.file:
-      path: "{{ item }}"
-      mode: '0644'
-      owner: vagrant
-      group: vagrant
-    with_items:
-      - /tmp/tls.key
-      - /tmp/tls.crt
+    - name: Create namespace for ingress-nginx
+      become_user: vagrant
+      ansible.builtin.command: kubectl create namespace ingress-nginx
+      register: ns_result
+      failed_when:
+        - ns_result.rc != 0
+        - "'already exists' not in ns_result.stderr"
 
-  - name: Install/Upgrade Nginx Ingress Controller
-    become_user: vagrant
-    ansible.builtin.command: >
-      helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx 
-      --values /tmp/ingress-nginx-values.yml 
-      --namespace ingress-nginx 
-      --create-namespace
-    register: helm_result
-    failed_when:
-      - helm_result.rc != 0
-      - "'already exists' not in helm_result.stderr"
-      
-  - name: Wait for Nginx Ingress Controller provisioning
-    become_user: vagrant
-    ansible.builtin.command:
-      cmd: kubectl wait --namespace ingress-nginx --for=condition=ready pod -l app.kubernetes.io/component=controller --timeout=120s
-    register: wait_result
-    failed_when: wait_result.rc != 0
-    retries: 5
-    delay: 10
-    until: wait_result.rc == 0
+    # Make sure TLS files have proper permissions
+    - name: Ensure TLS key and cert have proper permissions
+      ansible.builtin.file:
+        path: "{{ item }}"
+        mode: "0644"
+        owner: vagrant
+        group: vagrant
+      with_items:
+        - /tmp/tls.key
+        - /tmp/tls.crt
 
-  - name: Add Kubernetes Dashboard Helm repository
-    become_user: vagrant
-    ansible.builtin.command: helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
+    - name: Install/Upgrade Nginx Ingress Controller
+      become_user: vagrant
+      ansible.builtin.command: >
+        helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx
+        --values /tmp/ingress-nginx-values.yml
+        --namespace ingress-nginx
+        --create-namespace
+      register: helm_result
+      failed_when:
+        - helm_result.rc != 0
+        - "'already exists' not in helm_result.stderr"
 
-  - name: Update Helm repositories again
-    become_user: vagrant
-    ansible.builtin.command: helm repo update
+    - name: Wait for Nginx Ingress Controller provisioning
+      become_user: vagrant
+      ansible.builtin.command:
+        cmd: kubectl wait --namespace ingress-nginx --for=condition=ready pod -l app.kubernetes.io/component=controller --timeout=120s
+      register: wait_result
+      failed_when: wait_result.rc != 0
+      retries: 5
+      delay: 10
+      until: wait_result.rc == 0
 
-  - name: Install/Upgrade Kubernetes Dashboard
-    become_user: vagrant
-    ansible.builtin.command: >
-      helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard 
-      --namespace kubernetes-dashboard 
-      --create-namespace
-    register: helm_result
-    failed_when:
-      - helm_result.rc != 0
-      - "'already exists' not in helm_result.stderr"
-      
-  - name: Adding ServiceAccount for admin-user
-    ansible.builtin.copy:
-      dest: /tmp/k8s-dashboard-adminuser.yml
-      content: |
-        apiVersion: v1
-        kind: ServiceAccount
-        metadata:
-          name: admin-user
-          namespace: kubernetes-dashboard
-      mode: '0644'
-      
-  - name: Apply ServiceAccount for admin-user
-    become_user: vagrant
-    ansible.builtin.command: kubectl apply -f /tmp/k8s-dashboard-adminuser.yml
+    - name: Add Kubernetes Dashboard Helm repository
+      become_user: vagrant
+      ansible.builtin.command: helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
 
-  - name: Create ClusterRoleBinding for admin-user
-    ansible.builtin.copy:
-      dest: /tmp/k8s-dashboard-clusterrolebinding.yml
-      content: |
-        apiVersion: rbac.authorization.k8s.io/v1
-        kind: ClusterRoleBinding
-        metadata:
-          name: admin-user
-        roleRef:
-          apiGroup: rbac.authorization.k8s.io
-          kind: ClusterRole
-          name: cluster-admin
-        subjects:
-        - kind: ServiceAccount
-          name: admin-user
-          namespace: kubernetes-dashboard
-      mode: '0644'
+    - name: Update Helm repositories again
+      become_user: vagrant
+      ansible.builtin.command: helm repo update
 
-  - name: Apply ClusterRoleBinding
-    become_user: vagrant
-    ansible.builtin.command: kubectl apply -f /tmp/k8s-dashboard-clusterrolebinding.yml
+    - name: Install/Upgrade Kubernetes Dashboard
+      become_user: vagrant
+      ansible.builtin.command: >
+        helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard
+        --namespace kubernetes-dashboard
+        --create-namespace
+      register: helm_result
+      failed_when:
+        - helm_result.rc != 0
+        - "'already exists' not in helm_result.stderr"
 
-  - name: Create Ingress for Kubernetes Dashboard
-    ansible.builtin.copy:
-      dest: /tmp/k8s-dashboard-ingress.yml
-      content: |
-        apiVersion: networking.k8s.io/v1
-        kind: Ingress
-        metadata:
-          name: kubernetes-dashboard
-          namespace: kubernetes-dashboard
-          annotations:
-            nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-            kubernetes.io/ingress.class: "nginx"
-        spec:
-          tls:
-          - hosts:
-            - dashboard.local
-            secretName: dashboard-tls
-          rules:
-          - host: dashboard.local
-            http:
-              paths:
-              - path: /
-                pathType: Prefix
-                backend:
+    - name: Adding ServiceAccount for admin-user
+      ansible.builtin.copy:
+        dest: /tmp/k8s-dashboard-adminuser.yml
+        content: |
+          apiVersion: v1
+          kind: ServiceAccount
+          metadata:
+            name: admin-user
+            namespace: kubernetes-dashboard
+        mode: "0644"
+
+    - name: Apply ServiceAccount for admin-user
+      become_user: vagrant
+      ansible.builtin.command: kubectl apply -f /tmp/k8s-dashboard-adminuser.yml
+
+    - name: Create ClusterRoleBinding for admin-user
+      ansible.builtin.copy:
+        dest: /tmp/k8s-dashboard-clusterrolebinding.yml
+        content: |
+          apiVersion: rbac.authorization.k8s.io/v1
+          kind: ClusterRoleBinding
+          metadata:
+            name: admin-user
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: cluster-admin
+          subjects:
+          - kind: ServiceAccount
+            name: admin-user
+            namespace: kubernetes-dashboard
+        mode: "0644"
+
+    - name: Apply ClusterRoleBinding
+      become_user: vagrant
+      ansible.builtin.command: kubectl apply -f /tmp/k8s-dashboard-clusterrolebinding.yml
+
+    - name: Create Ingress for Kubernetes Dashboard
+      ansible.builtin.copy:
+        dest: /tmp/k8s-dashboard-ingress.yml
+        content: |
+          apiVersion: networking.k8s.io/v1
+          kind: Ingress
+          metadata:
+            name: kubernetes-dashboard
+            namespace: kubernetes-dashboard
+            annotations:
+              nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+              kubernetes.io/ingress.class: "nginx"
+          spec:
+            tls:
+            - hosts:
+              - dashboard.local
+              secretName: dashboard-tls
+            rules:
+            - host: dashboard.local
+              http:
+                paths:
+                - path: /
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: kubernetes-dashboard-kong-proxy
+                      port:
+                        number: 443
+        mode: "0644"
+
+    - name: Create TLS secret in kubernetes-dashboard namespace
+      become_user: vagrant
+      ansible.builtin.command:
+        cmd: kubectl create secret tls dashboard-tls --key /tmp/tls.key --cert /tmp/tls.crt -n kubernetes-dashboard
+      environment:
+        KUBECONFIG: "/home/vagrant/.kube/config"
+      register: secret_result
+      failed_when:
+        - secret_result.rc != 0
+        - "'already exists' not in secret_result.stderr"
+
+    - name: Apply Dashboard Ingress
+      become_user: vagrant
+      ansible.builtin.command: kubectl apply -f /tmp/k8s-dashboard-ingress.yml
+
+    - name: Download Istio 1.25.2
+      become_user: vagrant
+      ansible.builtin.get_url:
+        url: https://github.com/istio/istio/releases/download/1.25.2/istio-1.25.2-linux-amd64.tar.gz
+        dest: /home/vagrant/istio-1.25.2-linux-amd64.tar.gz
+        mode: "0644"
+
+    - name: Unpack Istio tar.gz
+      become_user: vagrant
+      ansible.builtin.unarchive:
+        src: /home/vagrant/istio-1.25.2-linux-amd64.tar.gz
+        dest: /home/vagrant/
+        remote_src: yes
+        creates: "/home/vagrant/istio-1.25.2/bin/istioctl"
+
+    - name: Add istioctl to PATH
+      ansible.builtin.lineinfile:
+        path: /home/vagrant/.profile
+        line: 'export PATH="$HOME/istio-1.25.2/bin:$PATH"'
+        create: yes
+        owner: vagrant
+        group: vagrant
+        mode: "0644"
+        regexp: '^export PATH="\$HOME/istio-1.25.2/bin:'
+
+    - name: Create Istio Gateway configuration
+      ansible.builtin.copy:
+        dest: /tmp/istio-config.yml
+        content: |
+          apiVersion: install.istio.io/v1alpha1
+          kind: IstioOperator
+          spec:
+            components:
+              ingressGateways:
+              - name: istio-ingressgateway
+                enabled: true
+                k8s:
                   service:
-                    name: kubernetes-dashboard-kong-proxy
-                    port:
-                      number: 443
-      mode: '0644'
+                    loadBalancerIP: 192.168.56.91 # Fixed IP for Istio Gateway
+        mode: "0644"
 
-  - name: Create TLS secret in kubernetes-dashboard namespace
-    become_user: vagrant
-    ansible.builtin.command:
-      cmd: kubectl create secret tls dashboard-tls --key /tmp/tls.key --cert /tmp/tls.crt -n kubernetes-dashboard
-    environment:
-      KUBECONFIG: "/home/vagrant/.kube/config"
-    register: secret_result
-    failed_when:
-      - secret_result.rc != 0
-      - "'already exists' not in secret_result.stderr"
+    - name: Install Istio with fixed gateway IP
+      ansible.builtin.command:
+        cmd: "/home/vagrant/istio-1.25.2/bin/istioctl install -y -f /tmp/istio-config.yml"
+      become: yes
+      become_user: vagrant
+      environment:
+        KUBECONFIG: "/home/vagrant/.kube/config"
+      args:
+        chdir: "/home/vagrant/istio-1.25.2"
+      register: istio_install_result
+      failed_when: istio_install_result.rc != 0
 
+    - name: Wait for Istio Gateway provisioning
+      become_user: vagrant
+      ansible.builtin.command:
+        cmd: kubectl wait --namespace istio-system --for=condition=ready pod -l app=istio-ingressgateway --timeout=120s
+      register: wait_result
+      failed_when: wait_result.rc != 0
+      retries: 5
+      delay: 10
+      until: wait_result.rc == 0
 
-  - name: Apply Dashboard Ingress
-    become_user: vagrant
-    ansible.builtin.command: kubectl apply -f /tmp/k8s-dashboard-ingress.yml
+    - name: Ensure Local-Path provisioner manifest is downloaded
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
+        dest: /tmp/local-path-storage.yaml
+        mode: "0644"
 
-  - name: Download Istio 1.25.2
-    become_user: vagrant
-    ansible.builtin.get_url:
-      url: https://github.com/istio/istio/releases/download/1.25.2/istio-1.25.2-linux-amd64.tar.gz
-      dest: /home/vagrant/istio-1.25.2-linux-amd64.tar.gz
-      mode: '0644'
+    - name: Apply Local-Path provisioner
+      become_user: vagrant
+      ansible.builtin.command:
+        cmd: kubectl apply -f /tmp/local-path-storage.yaml
+      environment:
+        KUBECONFIG: "/home/vagrant/.kube/config"
 
-  - name: Unpack Istio tar.gz
-    become_user: vagrant
-    ansible.builtin.unarchive:
-      src: /home/vagrant/istio-1.25.2-linux-amd64.tar.gz
-      dest: /home/vagrant/
-      remote_src: yes
-      creates: "/home/vagrant/istio-1.25.2/bin/istioctl"
+    - name: Wait for Local-Path StorageClass to appear
+      become_user: vagrant
+      ansible.builtin.command:
+        cmd: kubectl get storageclass local-path
+      register: sc_check
+      retries: 5
+      delay: 5
+      until: sc_check.rc == 0
 
-  - name: Add istioctl to PATH
-    ansible.builtin.lineinfile:
-      path: /home/vagrant/.profile
-      line: 'export PATH="$HOME/istio-1.25.2/bin:$PATH"'
-      create: yes
-      owner: vagrant
-      group: vagrant
-      mode: '0644'
-      regexp: '^export PATH="\$HOME/istio-1.25.2/bin:'
+    - name: Add Prometheus Helm repository
+      become_user: vagrant
+      ansible.builtin.command: helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+      environment:
+        KUBECONFIG: "/home/vagrant/.kube/config" # Ensure this path is correct on your Vagrant VM
 
-  - name: Create Istio Gateway configuration
-    ansible.builtin.copy:
-      dest: /tmp/istio-config.yml
-      content: |
-        apiVersion: install.istio.io/v1alpha1
-        kind: IstioOperator
-        spec:
-          components:
-            ingressGateways:
-            - name: istio-ingressgateway
-              enabled: true
-              k8s:
-                service:
-                  loadBalancerIP: 192.168.56.91 # Fixed IP for Istio Gateway
-      mode: '0644'
+    - name: Update Helm repositories after adding Prometheus
+      become_user: vagrant
+      ansible.builtin.command: helm repo update
+      environment:
+        KUBECONFIG: "/home/vagrant/.kube/config" # Ensure this path is correct on your Vagrant VM
 
-  - name: Install Istio with fixed gateway IP
-    ansible.builtin.command:
-      cmd: "/home/vagrant/istio-1.25.2/bin/istioctl install -y -f /tmp/istio-config.yml" 
-    become: yes
-    become_user: vagrant
-    environment:
-      KUBECONFIG: "/home/vagrant/.kube/config"
-    args:
-      chdir: "/home/vagrant/istio-1.25.2"
-    register: istio_install_result
-    failed_when: istio_install_result.rc != 0
-
-  - name: Wait for Istio Gateway provisioning
-    become_user: vagrant
-    ansible.builtin.command:
-      cmd: kubectl wait --namespace istio-system --for=condition=ready pod -l app=istio-ingressgateway --timeout=120s
-    register: wait_result
-    failed_when: wait_result.rc != 0
-    retries: 5
-    delay: 10
-    until: wait_result.rc == 0
+    - name: Install/Upgrade Prometheus Operator Helm chart
+      become_user: vagrant
+      ansible.builtin.command:
+        cmd: >
+          helm upgrade --install prometheus-operator prometheus-community/kube-prometheus-stack
+          --namespace monitoring
+          --create-namespace
+      environment:
+        KUBECONFIG: "/home/vagrant/.kube/config" # Ensure this path is correct on your Vagrant VM
+      register: prometheus_install_result
+      failed_when:
+        - prometheus_install_result.rc != 0
+        - "'already exists' not in prometheus_install_result.stderr" # Adjust this based on actual error message if needed
 
 # ansible-playbook -u vagrant -i 172.30.144.1:2222, provision/finalization.yml -e "ansible_ssh_private_key_file=$(pwd)/.vagrant/machines/ctrl/virtualbox/private_key"
 # Note: To access the dashboard and services with domain names, add these entries to your local /etc/hosts file:

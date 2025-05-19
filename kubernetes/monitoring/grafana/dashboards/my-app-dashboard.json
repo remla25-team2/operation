@@ -1,0 +1,24 @@
+{
+  "dashboard": {
+    "panels": [
+      {
+        "type": "gauge",
+        "title": "Active Users",
+        "targets": [
+          {
+            "expr": "active_users"
+          }
+        ]
+      },
+      {
+        "type": "graph",
+        "title": "Request Latency",
+        "targets": [
+          {
+            "expr": "rate(request_latency[5m])"
+          }
+        ]
+      }
+    ]
+  }
+}
