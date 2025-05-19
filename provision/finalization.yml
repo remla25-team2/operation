@@ -131,7 +131,7 @@
       delay: 10
       until: wait_result.rc == 0
 
-    - name: Add Kubernetes Dashboard Helm repository
+   - name: Add Kubernetes Dashboard Helm repository
       become_user: vagrant
       ansible.builtin.command: helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
 
@@ -294,7 +294,6 @@
       retries: 5
       delay: 10
       until: wait_result.rc == 0
-
     - name: Ensure Local-Path provisioner manifest is downloaded
       ansible.builtin.get_url:
         url: https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
