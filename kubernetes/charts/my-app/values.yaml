@@ -1,0 +1,54 @@
+appVersion: "0.1.0"
+
+replicaCount: 1
+
+app:
+  image:
+    repository: ghcr.io/remla25-team2/app
+    tag: latest
+  service:
+    port: 5000
+  modelServiceUrl: "http://model-service:5001"
+  hostPathVolume:
+    path: /mnt/shared/app-data
+
+modelService:
+  image:
+    repository: ghcr.io/remla25-team2/model-service
+    tag: latest
+  service:
+    port: 5001
+
+config:
+  message: "Hello from Helm!"
+
+secret:
+  password: "your-base-secret"
+
+ingress:
+  host: "app.local"
+
+prometheus:
+  alertmanager:
+    email:
+      to: "your-email@example.com"
+      from: "alertmanager@example.com"
+      smarthost: "smtp.example.com:587"
+      auth:
+        username: "your-username"
+        password: "your-password"
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local-path
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+grafana:
+  adminUser: "admin"
+  adminPassword: "admin"
+  datasources:
+    prometheus:
+      url: "http://prometheus-server"
