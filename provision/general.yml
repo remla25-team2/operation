@@ -6,8 +6,7 @@
         user: vagrant
         state: present
         key: "{{ lookup('file', item) }}"
-      with_fileglob:
-        - "public_keys/*.pub"
+      loop: "{{ lookup('fileglob', 'public_keys/*.pub', wantlist=True) }}"
 
     - name: Disable swap
       ansible.builtin.shell: swapoff -a
