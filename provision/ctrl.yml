@@ -47,13 +47,12 @@
         mode: '0644'
       when: not kubeconfig.stat.exists
 
-    - name: Insert --iface=eth1 after --ip-masq in kube-flannel.yml
-      ansible.builtin.lineinfile:
+    - name: Add --iface=eth1 after --ip-masq using regexp-based replacement
+      ansible.builtin.replace:
         path: /tmp/kube-flannel.yml
-        insertafter: '^\s*- --ip-masq$'
-        line: '        - --iface=eth1'
+        regexp: '^(\s*- --ip-masq)$'
+        replace: '\1\n        - --iface=eth1'
       when: not kubeconfig.stat.exists
-
 
     - name: Apply modified kube-flannel.yml
       ansible.builtin.command: kubectl apply -f /tmp/kube-flannel.yml
