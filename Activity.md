@@ -1,4 +1,4 @@
-## W2
+## W3
 -- **Daptardar, Akshay**--
 
 Created PR: https://github.com/remla25-team2/model-training/pull/1 (related to A1)
@@ -29,7 +29,7 @@ Created PR: https://github.com/remla25-team2/model-service/pull/1
 
 Approved PR: [https://github.com/remla24-team-01/lib/pull/7](https://github.com/remla25-team2/app/pull/1)
 
-## W3
+## W4
 -- **Daptardar, Akshay**--
 
 Created PR: https://github.com/remla25-team2/operation/pull/5 (related to A2)
@@ -61,7 +61,7 @@ Created PR: [https://github.com/remla25-team2/model-service/pull/1](https://gith
 Approved PR: [https://github.com/remla25-team2/operation/pull/5](https://github.com/remla25-team2/operation/pull/5)
 
 
-## W4
+## W5
 --**Blommestijn, Marvin**--
 
 Created PR: https://github.com/remla25-team2/operation/pull/10
