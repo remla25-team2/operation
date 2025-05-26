@@ -32,7 +32,7 @@ Approved PR: https://github.com/remla25-team2/model-training/pull/1
 
 --**Blommestijn, Marvin**--
 
-Created PR: https://github.com/remla25-team2/model-service/pull/1
+Created PR: https://github.com/remla25-team2/model-service/pull/1 (related to A1)
 
 Approved PR: [https://github.com/remla24-team-01/lib/pull/7](https://github.com/remla25-team2/app/pull/1)
 
@@ -63,7 +63,7 @@ Approved PR: https://github.com/remla25-team2/model-training/pull/1
 
 --**Blommestijn, Marvin**--
 
-Created PR: [https://github.com/remla25-team2/model-service/pull/1](https://github.com/remla25-team2/operation/pull/4)
+Created PR: [https://github.com/remla25-team2/model-service/pull/1](https://github.com/remla25-team2/operation/pull/4) (related to A2)
 
 Approved PR: [https://github.com/remla25-team2/operation/pull/5](https://github.com/remla25-team2/operation/pull/5)
 
