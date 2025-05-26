@@ -34,6 +34,7 @@ vagrant up
 - **Model-Training**  
   - Repo link: https://github.com/remla25-team2/model-training/  
   - A1 tag: https://github.com/remla25-team2/model-training/releases/tag/a1
+  - A4 tag: https://github.com/remla25-team2/model-training/releases/tag/a4
   
 - **lib-ml**  
   - Repo link: https://github.com/remla25-team2/lib-ml/ 
@@ -65,3 +66,5 @@ Grafana sidecar automatically imports the dashboard ConfigMap so no manual JSON 
 In case finalization.yml setup does not work:
  - ```ssh-copy-id vagrant@192.168.56.100```
  - Use the path to your default ssh key to run the command
+
+### Comments for A4
