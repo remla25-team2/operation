@@ -109,9 +109,9 @@ Approved PR: https://github.com/remla25-team2/model-training/pull/5
 
 --**Mangos, Angelos**--
 
-Created PR: 
+Created PR: https://github.com/remla25-team2/model-training/pull/5 (related to A4)
 
-Approved PR:
+Approved PR: https://github.com/remla25-team2/model-training/pull/4
 
 -- **Daptardar, Akshay**--
 
