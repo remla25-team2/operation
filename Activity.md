@@ -1,5 +1,8 @@
 ## W2
 
+--**Kravcevs, Ivans**--
+Created PR: https://github.com/remla25-team2/app/pull/1 (related to A1)
+
 ## W3
 -- **Daptardar, Akshay**--
 
@@ -9,8 +12,7 @@ Approved PR: https://github.com/remla25-team2/lib-ml/pull/2
 
 --**Kravcevs, Ivans**--
 
-Created PR: https://github.com/remla25-team2/app/pull/1
-
+Created PR: https://github.com/remla25-team2/operation/pull/3 (related to A2)
 Approved PR: https://github.com/remla25-team2/app/pull/2
 
 --**Mangos, Angelos**--
@@ -40,9 +42,9 @@ Approved PR: https://github.com/remla25-team2/operation/pull/6
 
 --**Kravcevs, Ivans**--
 
-Created PR: https://github.com/remla25-team2/operation/pull/3
+Created PR: Did A2 part previous week
 
-Approved PR: https://github.com/remla25-team2/app/pull/2
+Approved PR: 
 
 --**Mangos, Angelos**--
 
@@ -66,7 +68,7 @@ Approved PR: [https://github.com/remla25-team2/operation/pull/5](https://github.
 ## W5
 --**Blommestijn, Marvin**--
 
-Created PR: https://github.com/remla25-team2/operation/pull/10
+Created PR: https://github.com/remla25-team2/operation/pull/10 (related to A3)
 
 Approved PR: https://github.com/remla25-team2/operation/pull/9
 
@@ -89,3 +91,27 @@ Created PR: https://github.com/remla25-team2/operation/pull/11 (related to A3)
 Approved PR: https://github.com/remla25-team2/app/pull/10
 
 ## W6
+
+--**Blommestijn, Marvin**--
+
+Created PR:  (related to A4)
+
+Approved PR: 
+
+--**Kravcevs, Ivans**--
+
+Created PR: https://github.com/remla25-team2/model-training/pull/4
+
+Approved PR: https://github.com/remla25-team2/model-training/pull/5
+
+--**Mangos, Angelos**--
+
+Created PR: 
+
+Approved PR:
+
+-- **Daptardar, Akshay**--
+
+Created PR: 
+
+Approved PR: 
