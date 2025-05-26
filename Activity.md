@@ -97,7 +97,8 @@ Approved PR: https://github.com/remla25-team2/app/pull/10
 
 --**Blommestijn, Marvin**--
 
-Created PR: https://github.com/remla25-team2/model-training/pull/7 (related to A4)
+Created PR: https://github.com/remla25-team2/model-training/pull/7 (related to A4) 
+Cause merge conflicts after the deadline changed it to this: https://github.com/remla25-team2/model-training/pull/9 (related to A4)
 
 Approved PR:  https://github.com/remla25-team2/model-training/pull/2 
 
