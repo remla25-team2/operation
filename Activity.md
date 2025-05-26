@@ -103,7 +103,7 @@ Approved PR:  https://github.com/remla25-team2/model-training/pull/2
 
 --**Kravcevs, Ivans**--
 
-Created PR: https://github.com/remla25-team2/model-training/pull/4
+Created PR: https://github.com/remla25-team2/model-training/pull/4 (related to A4)
 
 Approved PR: https://github.com/remla25-team2/model-training/pull/5
 
@@ -115,6 +115,6 @@ Approved PR: https://github.com/remla25-team2/model-training/pull/4
 
 -- **Daptardar, Akshay**--
 
-Created PR: 
+Created PR: https://github.com/remla25-team2/model-training/pull/8 (related to A4)
 
-Approved PR: 
+Approved PR: https://github.com/remla25-team2/model-training/pull/4
