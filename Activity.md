@@ -78,7 +78,7 @@ Approved PR: https://github.com/remla25-team2/operation/pull/10
 
 --**Mangos, Angelos**--
 
-Created PR: [https://github.com/remla25-team2/operation/pull/6](https://github.com/remla25-team2/operation/pull/9) (related to A3)
+Created PR: [https://github.com/remla25-team2/operation/pull/6](https://github.com/remla25-team2/operation/pull/9) (related to A2)
 
 Approved PR: [https://github.com/remla25-team2/operation/pull/3](https://github.com/remla25-team2/app/pull/9)
 
