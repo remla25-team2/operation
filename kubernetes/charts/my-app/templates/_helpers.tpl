@@ -2,7 +2,7 @@
 Generate the full name of the resource.
 */}}
 {{- define "my-app.fullname" -}}
-{{- printf "%s-%s" .Release.Name .Chart.Name | trunc 63 | trimSuffix "-" -}}
+{{ .Release.Name }}
 {{- end -}}
 
 {{/*
