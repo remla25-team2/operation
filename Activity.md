@@ -137,9 +137,9 @@ Approved PR:
 
 --**Blommestijn, Marvin**--
 
-Created PR: 
+Created PR: https://github.com/remla25-team2/model-training/pull/11 (related to A4)
 
-Approved PR:  
+Approved PR:  https://github.com/remla25-team2/app/pull/21
 
 -- **Daptardar, Akshay**--
 
