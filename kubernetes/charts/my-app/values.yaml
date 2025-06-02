@@ -8,7 +8,7 @@ app:
     tag: latest
   service:
     port: 5000
-  modelServiceUrl: "http://model-service:5001"
+  modelServiceUrl: "http://my-app-model-service:5001"
   hostPathVolume:
     path: /mnt/shared/app-data
 

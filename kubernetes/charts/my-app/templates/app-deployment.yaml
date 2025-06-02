@@ -1,19 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
-
 metadata:
-  name: {{ include "my-app.fullname" . }}
+  name: {{ include "my-app.fullname" . }}-app
   labels:
     {{- include "my-app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: app
+    version: v1
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "my-app.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: app
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      version: v1
   template:
     metadata:
       labels:
-        {{- include "my-app.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: app
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        version: v1
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "{{ .Values.app.service.port }}"
     spec:
       containers:
         - name: app

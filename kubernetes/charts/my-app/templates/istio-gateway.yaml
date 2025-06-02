@@ -1,0 +1,82 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata: 
+  name:
+    {{ include "my-app.fullname" . }}-gateway
+  labels:
+    {{- include "my-app.labels" . | nindent 4 }}
+spec:
+  selector: { istio: ingressgateway }
+  servers:
+  - port: { number: 80, name: http, protocol: HTTP }
+    hosts: [ "*" ]
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata: 
+  name:
+    {{ include "my-app.fullname" . }}-virtualservice
+  labels:
+    {{- include "my-app.labels" . | nindent 4 }}
+spec:
+  gateways: [  {{ include "my-app.fullname" . }}-gateway ]
+  hosts: [ "*" ]
+  http:
+  - match:
+    - uri: { prefix: / }
+    route:
+    - destination: { host: {{ include "my-app.fullname" . }}-app }
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata: { name: app-dr }
+spec:
+  host: {{ include "my-app.fullname" . }}-app
+  subsets:
+  - name: v1
+    labels: { version: v1 }
+  - name: v2
+    labels: { version: v2 }
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata: { name: model-service-dr }
+spec:
+  host: {{ include "my-app.fullname" . }}-model-service
+  subsets:
+  - name: v1
+    labels: { version: v1 }
+  - name: v2
+    labels: { version: v2 }
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata: { name: model-vs }
+spec:
+  hosts: [ {{ include "my-app.fullname" . }}-model-service ]
+  http:
+  - match:
+    - sourceLabels: { version: v2 }
+    route:
+    - destination: { host: {{ include "my-app.fullname" . }}-model-service, subset: v2 }
+  - route: # default route
+    - destination: { host: {{ include "my-app.fullname" . }}-model-service, subset: v1 }
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata: { name: my-entry-service }
+spec:
+  gateways: [ my-gateway ]
+  hosts: [ "*" ]
+  http:
+  - match:
+    - uri: { prefix: / }
+    route:
+    - destination: { host: {{ include "my-app.fullname" . }}-app, subset: v1 }
+      weight: 100
+    - destination: { host: {{ include "my-app.fullname" . }}-app, subset: v2 }
+      weight: 0
