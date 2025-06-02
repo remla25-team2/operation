@@ -131,9 +131,9 @@ Approved PR: https://github.com/remla25-team2/app/pull/21
 
 --**Mangos, Angelos**--
 
-Created PR: 
+Created PR: https://github.com/remla25-team2/operation/pull/14 (related to A5)
 
-Approved PR: 
+Approved PR: https://github.com/remla25-team2/operation/pull/12
 
 --**Blommestijn, Marvin**--
 
