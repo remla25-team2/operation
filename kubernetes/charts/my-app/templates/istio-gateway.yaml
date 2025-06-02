@@ -77,6 +77,6 @@ spec:
     - uri: { prefix: / }
     route:
     - destination: { host: {{ include "my-app.fullname" . }}-app, subset: v1 }
-      weight: 100
+      weight: 70
     - destination: { host: {{ include "my-app.fullname" . }}-app, subset: v2 }
-      weight: 0
+      weight: 30
