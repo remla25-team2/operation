@@ -21,20 +21,24 @@ vagrant up
   - Repo link: https://github.com/remla25-team2/operation/
   - A2 tag: https://github.com/remla25-team2/operation/releases/tag/a2
   - A3 tag: https://github.com/remla25-team2/operation/releases/tag/a3
+  - A5 tag: https://github.com/remla25-team2/operation/releases/tag/a5
   
 - **App**  
   - Repo link: https://github.com/remla25-team2/app/
   - A1 tag: https://github.com/remla25-team2/app/releases/tag/a1
   - A3 tag: https://github.com/remla25-team2/app/releases/tag/a3
+  - A5 tag: https://github.com/remla25-team2/app/releases/tag/a5
 
 - **Model-Service**  
   - Repo link: https://github.com/remla25-team2/model-service/  
   - A1 tag: https://github.com/remla25-team2/model-service/releases/tag/a1
+  - A5 tag: https://github.com/remla25-team2/model-service/releases/tag/a5
   
 - **Model-Training**  
   - Repo link: https://github.com/remla25-team2/model-training/  
   - A1 tag: https://github.com/remla25-team2/model-training/releases/tag/a1
   - A4 tag: https://github.com/remla25-team2/model-training/releases/tag/a4
+  - A5 tag: https://github.com/remla25-team2/model-training/releases/tag/a5
   
 - **lib-ml**  
   - Repo link: https://github.com/remla25-team2/lib-ml/ 
@@ -68,3 +72,7 @@ In case finalization.yml setup does not work:
  - Use the path to your default ssh key to run the command
 
 ### Comments for A4
+
+### Comments for A5
+
+The new experiment dashboards should be automatically imported. Documentation is not done yet nor the additional use case.
