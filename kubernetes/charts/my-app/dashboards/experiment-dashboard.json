@@ -1,0 +1,181 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "targets": [
+        {
+          "expr": "rate(http_requests_total{endpoint=\"/sentiment\", version=\"v1\"}[5m])",
+          "legendFormat": "v1 - Baseline",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(http_requests_total{endpoint=\"/sentiment\", version=\"v2\"}[5m])",
+          "legendFormat": "v2 - Experiment",
+          "refId": "B"
+        }
+      ],
+      "title": "Request Rate Comparison",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "steps": [
+              {"color": "red", "value": null},
+              {"color": "yellow", "value": 0.03},
+              {"color": "green", "value": 0.05}
+            ]
+          }
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 2,
+      "targets": [
+        {
+          "expr": "rate(prediction_feedback_total[5m]) / rate(http_requests_total{endpoint=\"/sentiment\", version=\"v2\"}[5m])",
+          "legendFormat": "Feedback Rate",
+          "refId": "A"
+        }
+      ],
+      "title": "User Feedback Rate (v2)",
+      "type": "gauge"
+    },
+    {
+      "datasource": "Prometheus",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 3,
+      "targets": [
+        {
+          "expr": "sum(rate(http_requests_total{endpoint=\"/sentiment\"}[5m])) by (version)",
+          "legendFormat": "{{version}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Traffic Distribution",
+      "type": "piechart"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 4,
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{version=\"v1\"}[5m]))",
+          "legendFormat": "v1 - 95th percentile",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{version=\"v2\"}[5m]))",
+          "legendFormat": "v2 - 95th percentile",
+          "refId": "B"
+        }
+      ],
+      "title": "Response Latency",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "bars"
+          }
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      },
+      "id": 5,
+      "targets": [
+        {
+          "expr": "sum(rate(prediction_feedback_total[5m])) by (user_feedback)",
+          "legendFormat": "{{user_feedback}}",
+          "refId": "A"
+        }
+      ],
+      "title": "User Feedback Types",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 16
+      },
+      "id": 6,
+      "targets": [
+        {
+          "expr": "rate(http_requests_total{status=~\"5..\", version=\"v1\"}[5m]) / rate(http_requests_total{version=\"v1\"}[5m])",
+          "legendFormat": "v1 - Error Rate",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(http_requests_total{status=~\"5..\", version=\"v2\"}[5m]) / rate(http_requests_total{version=\"v2\"}[5m])",
+          "legendFormat": "v2 - Error Rate",
+          "refId": "B"
+        }
+      ],
+      "title": "Error Rate Comparison",
+      "type": "timeseries"
+    }
+  ],
+  "tags": ["experiment", "ab-testing", "sentiment-analysis"],
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "title": "A/B Testing Dashboard",
+  "uid": "ab-testing-dashboard",
+  "version": 1
+}

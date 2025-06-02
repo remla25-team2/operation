@@ -1,3 +1,112 @@
+{{- if .Values.experiment.enabled }}
+# v1 Deployment (Baseline)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "my-app.fullname" . }}-app-v1
+  labels:
+    {{- include "my-app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: app
+    version: v1
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: app
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      version: v1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: app
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        version: v1
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "{{ .Values.app.service.port }}"
+    spec:
+      containers:
+        - name: app
+          image: "{{ .Values.experiment.versions.v1.image.repository }}:{{ .Values.experiment.versions.v1.image.tag }}"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: {{ .Values.app.service.port }}
+              protocol: TCP
+          env:
+            - name: MODEL_SERVICE_URL
+              value: {{ .Values.app.modelServiceUrl | quote }}
+            - name: VERSION
+              value: "v1"
+            - name: MESSAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "my-app.fullname" . }}-config
+                  key: MESSAGE
+          volumeMounts:
+            - name: app-data
+              mountPath: /mnt/shared/app-data
+      volumes:
+        - name: app-data
+          hostPath:
+            path: {{ .Values.app.hostPathVolume.path }}
+            type: DirectoryOrCreate
+---
+# v2 Deployment (Experiment)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "my-app.fullname" . }}-app-v2
+  labels:
+    {{- include "my-app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: app
+    version: v2
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: app
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      version: v2
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: app
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        version: v2
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "{{ .Values.app.service.port }}"
+    spec:
+      containers:
+        - name: app
+          image: "{{ .Values.experiment.versions.v2.image.repository }}:{{ .Values.experiment.versions.v2.image.tag }}"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: {{ .Values.app.service.port }}
+              protocol: TCP
+          env:
+            - name: MODEL_SERVICE_URL
+              value: {{ .Values.app.modelServiceUrl | quote }}
+            - name: VERSION
+              value: "v2"
+            - name: MESSAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "my-app.fullname" . }}-config
+                  key: MESSAGE
+          volumeMounts:
+            - name: app-data
+              mountPath: /mnt/shared/app-data
+      volumes:
+        - name: app-data
+          hostPath:
+            path: {{ .Values.app.hostPathVolume.path }}
+            type: DirectoryOrCreate
+{{- else }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -53,3 +162,4 @@ spec:
           hostPath:
             path: {{ .Values.app.hostPathVolume.path }}
             type: DirectoryOrCreate
+{{- end }}

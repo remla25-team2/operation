@@ -19,6 +19,21 @@ modelService:
   service:
     port: 5001
 
+experiment:
+  enabled: false
+  versions:
+    v1:
+      weight: 90
+      image:
+        repository: ghcr.io/remla25-team2/app
+        tag: v0.1.5  # Baseline version
+    v2:
+      weight: 10
+      image:
+        repository: ghcr.io/remla25-team2/app
+        tag: v0.2.1  # Experiment version
+
+
 config:
   message: "Hello from Helm!"
 
