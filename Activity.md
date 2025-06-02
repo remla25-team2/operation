@@ -120,3 +120,29 @@ Approved PR: https://github.com/remla25-team2/model-training/pull/4
 Created PR: https://github.com/remla25-team2/model-training/pull/8 (related to A4)
 
 Approved PR: https://github.com/remla25-team2/model-training/pull/4
+
+## W7
+
+--**Kravcevs, Ivans**--
+
+Created PR: 
+
+Approved PR: 
+
+--**Mangos, Angelos**--
+
+Created PR: 
+
+Approved PR: 
+
+--**Blommestijn, Marvin**--
+
+Created PR: 
+
+Approved PR:  
+
+-- **Daptardar, Akshay**--
+
+Created PR: 
+
+Approved PR:
