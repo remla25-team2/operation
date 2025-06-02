@@ -125,9 +125,9 @@ Approved PR: https://github.com/remla25-team2/model-training/pull/4
 
 --**Kravcevs, Ivans**--
 
-Created PR: 
+Created PR: https://github.com/remla25-team2/operation/pull/12
 
-Approved PR: 
+Approved PR: https://github.com/remla25-team2/app/pull/21
 
 --**Mangos, Angelos**--
 
