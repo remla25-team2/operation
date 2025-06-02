@@ -77,7 +77,7 @@ Approved PR: https://github.com/remla25-team2/operation/pull/9
 
 --**Kravcevs, Ivans**--
 
-Created PR: https://github.com/remla25-team2/app/pull/9
+Created PR: https://github.com/remla25-team2/app/pull/9 (related to A3)
 
 Approved PR: https://github.com/remla25-team2/operation/pull/10
 
@@ -125,7 +125,7 @@ Approved PR: https://github.com/remla25-team2/model-training/pull/4
 
 --**Kravcevs, Ivans**--
 
-Created PR: https://github.com/remla25-team2/operation/pull/12
+Created PR: https://github.com/remla25-team2/operation/pull/12 (related to A5)
 
 Approved PR: https://github.com/remla25-team2/app/pull/21
 
