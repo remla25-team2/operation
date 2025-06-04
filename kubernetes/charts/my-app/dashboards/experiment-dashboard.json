@@ -22,12 +22,12 @@
       "id": 1,
       "targets": [
         {
-          "expr": "rate(http_requests_total{endpoint=\"/sentiment\", version=\"v1\"}[5m])",
+          "expr": "rate(http_requests_total{exported_endpoint=\"/sentiment\", version=\"v1\"}[5m])",
           "legendFormat": "v1 - Baseline",
           "refId": "A"
         },
         {
-          "expr": "rate(http_requests_total{endpoint=\"/sentiment\", version=\"v2\"}[5m])",
+          "expr": "rate(http_requests_total{exported_endpoint=\"/sentiment\", version=\"v2\"}[5m])",
           "legendFormat": "v2 - Experiment",
           "refId": "B"
         }
@@ -38,52 +38,88 @@
     {
       "datasource": "Prometheus",
       "fieldConfig": {
-        "defaults": {
-          "unit": "percentunit",
-          "thresholds": {
-            "steps": [
-              {"color": "red", "value": null},
-              {"color": "yellow", "value": 0.03},
-              {"color": "green", "value": 0.05}
-            ]
-          }
+      "defaults": {
+        "unit": "percentunit",
+        "thresholds": {
+        "steps": [
+          {"color": "red", "value": null},
+          {"color": "yellow", "value": 0.03},
+          {"color": "green", "value": 0.05}
+        ]
         }
+      }
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 0
+      "h": 8,
+      "w": 12,
+      "x": 12,
+      "y": 0
       },
       "id": 2,
       "targets": [
-        {
-          "expr": "rate(prediction_feedback_total[5m]) / rate(http_requests_total{endpoint=\"/sentiment\", version=\"v2\"}[5m])",
-          "legendFormat": "Feedback Rate",
-          "refId": "A"
-        }
+      {
+        "expr": "sum(increase(prediction_feedback_total[5m])) / sum(increase(http_requests_total{exported_endpoint=\"/sentiment\", version=\"v2\"}[5m]))",
+        "legendFormat": "Feedback Rate (v2)",
+        "refId": "A"
+      }
       ],
       "title": "User Feedback Rate (v2)",
       "type": "gauge"
     },
     {
       "datasource": "Prometheus",
+      "fieldConfig": {
+      "defaults": {
+        "unit": "percentunit",
+        "thresholds": {
+        "steps": [
+          {"color": "red", "value": null},
+          {"color": "yellow", "value": 0.03},
+          {"color": "green", "value": 0.05}
+        ]
+        }
+      }
+      },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 8
+      "h": 8,
+      "w": 12,
+      "x": 12,
+      "y": 8
+      },
+      "id": 10,
+      "targets": [
+      {
+        "expr": "sum(increase(prediction_feedback_total[5m])) / sum(increase(http_requests_total{exported_endpoint=\"/sentiment\", version=\"v1\"}[5m]))",
+        "legendFormat": "Feedback Rate (v1)",
+        "refId": "A"
+      }
+      ],
+      "title": "User Feedback Rate (v1)",
+      "type": "gauge"
+    },
+    {
+      "datasource": "Prometheus",
+      "gridPos": {
+      "h": 8,
+      "w": 12,
+      "x": 0,
+      "y": 8
       },
       "id": 3,
       "targets": [
-        {
-          "expr": "sum(rate(http_requests_total{endpoint=\"/sentiment\"}[5m])) by (version)",
-          "legendFormat": "{{version}}",
-          "refId": "A"
-        }
+      {
+        "expr": "sum(rate(http_requests_total{exported_endpoint=\"/sentiment\"}[5m])) by (version)",
+        "legendFormat": "{{version}}",
+        "refId": "A"
+      }
       ],
       "title": "Traffic Distribution",
-      "type": "piechart"
+      "type": "piechart",
+      "options": {
+      "reduceOptions": {
+        "calcs": ["mean"]
+      }
+      }
     },
     {
       "datasource": "Prometheus",
@@ -101,12 +137,12 @@
       "id": 4,
       "targets": [
         {
-          "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{version=\"v1\"}[5m]))",
+          "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{version=\"v1\"}[5m])) by (le))",
           "legendFormat": "v1 - 95th percentile",
           "refId": "A"
         },
         {
-          "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{version=\"v2\"}[5m]))",
+          "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{version=\"v2\"}[5m])) by (le))",
           "legendFormat": "v2 - 95th percentile",
           "refId": "B"
         }
@@ -132,12 +168,12 @@
       "id": 5,
       "targets": [
         {
-          "expr": "sum(rate(prediction_feedback_total[5m])) by (user_feedback)",
-          "legendFormat": "{{user_feedback}}",
+          "expr": "sum(rate(prediction_feedback_total[5m])) by (user_feedback, original_prediction)",
+          "legendFormat": "{{original_prediction}} - {{user_feedback}}",
           "refId": "A"
         }
       ],
-      "title": "User Feedback Types",
+      "title": "User Feedback by Prediction Type",
       "type": "timeseries"
     },
     {
@@ -156,23 +192,100 @@
       "id": 6,
       "targets": [
         {
-          "expr": "rate(http_requests_total{status=~\"5..\", version=\"v1\"}[5m]) / rate(http_requests_total{version=\"v1\"}[5m])",
+          "expr": "rate(http_requests_total{status=~\"5..\", version=\"v1\"}[5m])",
           "legendFormat": "v1 - Error Rate",
           "refId": "A"
         },
         {
-          "expr": "rate(http_requests_total{status=~\"5..\", version=\"v2\"}[5m]) / rate(http_requests_total{version=\"v2\"}[5m])",
+          "expr": "rate(http_requests_total{status=~\"5..\", version=\"v2\"}[5m])",
           "legendFormat": "v2 - Error Rate",
           "refId": "B"
         }
       ],
       "title": "Error Rate Comparison",
       "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 24
+      },
+      "id": 7,
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.5, sum(rate(prediction_confidence_distribution_bucket[5m])) by (le, prediction))",
+          "legendFormat": "{{prediction}} - 50th percentile",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(prediction_confidence_distribution_bucket[5m])) by (le, prediction))",
+          "legendFormat": "{{prediction}} - 95th percentile",
+          "refId": "B"
+        }
+      ],
+      "title": "Prediction Confidence Distribution",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 24
+      },
+      "id": 8,
+      "targets": [
+        {
+          "expr": "sum(rate(user_corrections_total[5m])) by (original_prediction, corrected_prediction)",
+          "legendFormat": "{{original_prediction}} → {{corrected_prediction}}",
+          "refId": "A"
+        }
+      ],
+      "title": "User Corrections",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 32
+      },
+      "id": 9,
+      "targets": [
+        {
+          "expr": "sum(rate(flagged_predictions_total[5m])) by (reason)",
+          "legendFormat": "{{reason}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Flagged Predictions",
+      "type": "timeseries"
     }
   ],
   "tags": ["experiment", "ab-testing", "sentiment-analysis"],
   "time": {
-    "from": "now-1h",
+    "from": "now-5m",
     "to": "now"
   },
   "title": "A/B Testing Dashboard",
