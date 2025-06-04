@@ -58,8 +58,8 @@ All the steps are implemenented and works perfectly on Linux. Windows might have
 To run it: 
  - ```vagrant up --provision```
  - ```ansible-playbook -u vagrant -i 192.168.56.100, provision/finalization.yml -e "ansible_ssh_private_key_file=.vagrant/machines/ctrl/virtualbox/private_key"```
- - Copy config from ctrl to local machine: ```vagrant ssh ctrl -c 'cat /home/vagrant/.kube/config' > ~/operation-kubeconfig
-export KUBECONFIG=~/operation-kubeconfig```
+ - Copy config from ctrl to local machine: ```vagrant ssh ctrl -c 'cat /home/vagrant/.kube/config' > ~/operation-kubeconfig```
+ - Then export the kube config: ```export KUBECONFIG=~/operation-kubeconfig```
  - ```helm install my-app ./kubernetes/charts/my-app```
  - To check that they are running;   ```kubectl get pods -n monitoring```
  - To run Grafana in the UI: ```kubectl --namespace monitoring port-forward svc/prometheus-operator-grafana 3000:80``` and then available at http://localhost:3000

@@ -1,24 +1,49 @@
 {
-  "dashboard": {
-    "panels": [
-      {
-        "type": "gauge",
-        "title": "Active Users",
-        "targets": [
-          {
-            "expr": "active_users"
-          }
-        ]
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "id": null,
+  "links": [],
+  "title": "My App Dashboard",
+  "uid": "my-app-dashboard",
+  "version": 1,
+  "panels": [
+    {
+      "type": "gauge",
+      "title": "Active Users",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
       },
-      {
-        "type": "graph",
-        "title": "Request Latency",
-        "targets": [
-          {
-            "expr": "rate(request_latency[5m])"
-          }
-        ]
-      }
-    ]
+      "targets": [
+        {
+          "expr": "active_users",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Request Latency",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "targets": [
+        {
+          "expr": "rate(request_latency[5m])",
+          "refId": "A"
+        }
+      ]
+    }
+  ],
+  "time": {
+    "from": "now-1h",
+    "to": "now"
   }
 }

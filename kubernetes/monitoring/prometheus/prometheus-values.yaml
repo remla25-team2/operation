@@ -1,5 +1,25 @@
+grafana:
+  adminUser: "admin"
+  adminPassword: "admin"
+  sidecar:
+    datasources:
+      enabled: true
+      defaultDatasourceEnabled: false
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          type: prometheus
+          url: http://prometheus-operator-kube-p-prometheus:9090
+          access: proxy
+          isDefault: true
+          editable: true
+
 alertmanager:
-  enabled: true
   config:
     global:
       resolve_timeout: 5m
@@ -15,5 +35,19 @@ alertmanager:
           - to: "your-email@example.com"
             from: "alertmanager@example.com"
             smarthost: "smtp.example.com:587"
-            auth_username: "your-username"
+            auth_username: "your-username" 
             auth_password: "your-password"
+
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelector:
+      matchLabels:
+        release: prometheus
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local-path
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
