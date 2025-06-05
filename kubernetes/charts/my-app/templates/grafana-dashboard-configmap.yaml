@@ -9,4 +9,4 @@ data:
   experiment-dashboard.json: |-
 {{ .Files.Get "dashboards/experiment-dashboard.json" | indent 4 }}
   app-dashboard.json: |-
-{{ .Files.Get "dashboards/app-dashboard.json" | indent 4 }}
+{{ .Files.Get "dashboards/my-app-dashboard.json" | indent 4 }}

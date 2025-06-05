@@ -43,27 +43,3 @@ secret:
 ingress:
   host: "app.local"
 
-prometheus:
-  alertmanager:
-    email:
-      to: "your-email@example.com"
-      from: "alertmanager@example.com"
-      smarthost: "smtp.example.com:587"
-      auth:
-        username: "your-username"
-        password: "your-password"
-  prometheusSpec:
-    storageSpec:
-      volumeClaimTemplate:
-        spec:
-          storageClassName: local-path
-          accessModes: ["ReadWriteOnce"]
-          resources:
-            requests:
-              storage: 10Gi
-grafana:
-  adminUser: "admin"
-  adminPassword: "admin"
-  datasources:
-    prometheus:
-      url: "http://prometheus-server"

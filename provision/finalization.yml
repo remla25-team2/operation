@@ -131,7 +131,7 @@
       delay: 10
       until: wait_result.rc == 0
 
-   - name: Add Kubernetes Dashboard Helm repository
+    - name: Add Kubernetes Dashboard Helm repository
       become_user: vagrant
       ansible.builtin.command: helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
 
@@ -328,6 +328,12 @@
       environment:
         KUBECONFIG: "/home/vagrant/.kube/config" # Ensure this path is correct on your Vagrant VM
 
+    - name: Copy Prometheus values file to VM
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../kubernetes/monitoring/prometheus/prometheus-values.yaml"
+        dest: /tmp/prometheus-values.yaml
+        mode: '0644'
+
     - name: Install/Upgrade Prometheus Operator Helm chart
       become_user: vagrant
       ansible.builtin.command:
@@ -335,6 +341,7 @@
           helm upgrade --install prometheus-operator prometheus-community/kube-prometheus-stack
           --namespace monitoring
           --create-namespace
+          --values /tmp/prometheus-values.yaml
       environment:
         KUBECONFIG: "/home/vagrant/.kube/config" # Ensure this path is correct on your Vagrant VM
       register: prometheus_install_result

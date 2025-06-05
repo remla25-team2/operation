@@ -7,7 +7,8 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: {{ include "my-app.name" . }}
+      app.kubernetes.io/name: {{ include "my-app.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
   endpoints:
     - port: http
       path: /metrics
