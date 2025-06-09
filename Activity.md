@@ -146,3 +146,11 @@ Approved PR:  https://github.com/remla25-team2/app/pull/21
 Created PR: 
 
 Approved PR:
+
+## W8
+
+-- **Daptardar, Akshay**--
+
+Created PR: 
+
+Approved PR: https://github.com/remla25-team2/operation/pull/15
