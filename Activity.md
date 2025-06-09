@@ -151,6 +151,6 @@ Approved PR:
 
 -- **Daptardar, Akshay**--
 
-Created PR: 
+Created PR: https://github.com/remla25-team2/model-training/pull/15
 
 Approved PR: https://github.com/remla25-team2/operation/pull/15
