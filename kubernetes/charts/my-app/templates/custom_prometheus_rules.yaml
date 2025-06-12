@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  namespace: monitoring
+  name: {{ include "my-app.fullname" . }}-rules
+  labels:
+    {{- include "my-app.labels" . | nindent 4 }}
+    release: prometheus
+spec:
+  groups:
+  - name: {{ include "my-app.name" . }}.rules
+    rules:
+    - alert: HighRequestRate
+      expr: rate(http_requests_total[1m]) > 15
+      for: 2m
+      labels:
+        severity: warning
+        app: {{ include "my-app.name" . }}
+      annotations:
+        summary: "High request rate detected"
+        description: "The request rate is above 15 requests per minute for the last 2 minutes."
