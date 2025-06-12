@@ -44,6 +44,11 @@ spec:
                 configMapKeyRef:
                   name: {{ include "my-app.fullname" . }}-config
                   key: MESSAGE
+            - name: SECRET_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: password
           volumeMounts:
             - name: app-data
               mountPath: /mnt/shared/app-data
@@ -98,6 +103,11 @@ spec:
                 configMapKeyRef:
                   name: {{ include "my-app.fullname" . }}-config
                   key: MESSAGE
+            - name: SECRET_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: password
           volumeMounts:
             - name: app-data
               mountPath: /mnt/shared/app-data
@@ -152,7 +162,7 @@ spec:
             - name: SECRET_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "my-app.fullname" . }}-secret
+                  name: app-secrets
                   key: password
           volumeMounts:
             - name: app-data

@@ -37,9 +37,6 @@ experiment:
 config:
   message: "Hello from Helm!"
 
-secret:
-  password: "your-base-secret"
-
 ingress:
   host: "app.local"
 

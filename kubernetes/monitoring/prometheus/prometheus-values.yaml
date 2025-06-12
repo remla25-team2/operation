@@ -1,6 +1,8 @@
 grafana:
-  adminUser: "admin"
-  adminPassword: "admin"
+  admin:
+    existingSecret: "grafana-admin-secret"
+    userKey: username
+    passwordKey: password
   sidecar:
     datasources:
       enabled: true
@@ -35,8 +37,11 @@ alertmanager:
           - to: "your-email@example.com"
             from: "alertmanager@example.com"
             smarthost: "smtp.example.com:587"
-            auth_username: "your-username" 
-            auth_password: "your-password"
+            auth_username_file: "/etc/alertmanager/secrets/smtp-secret/username"
+            auth_password_file: "/etc/alertmanager/secrets/smtp-secret/password"
+  alertmanagerSpec:
+    secrets:
+      - smtp-secret
 
 prometheus:
   prometheusSpec:
@@ -51,3 +56,5 @@ prometheus:
           resources:
             requests:
               storage: 10Gi
+    secrets:
+      - smtp-secret
