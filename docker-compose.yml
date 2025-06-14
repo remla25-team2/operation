@@ -1,19 +1,40 @@
 version: '3.8'
 services:
   app:
-    image: ghcr.io/remla25-team2/app:latest
+    image: ${APP_IMAGE}
     ports:
-      - "5000:5000"
+      - "${APP_HOST_PORT}:${APP_CONTAINER_PORT}"
+    restart: on-failure
     volumes:
-      - ./app-data:/app/data
+      - app_data:/mnt/shared/app-data
     environment:
+      - MODEL_SERVICE_URL=http://model-service:${MODEL_SERVICE_CONTAINER_PORT}
       - ENV=production
-      - MODEL_SERVICE_URL=http://model-service:5001
+      # - SECRET_PASSWORD_FILE=/run/secrets/app_password
+    # secrets:
+    #   - app_password
     depends_on:
       - model-service
 
   model-service:
-    image: ghcr.io/remla25-team2/model-service:latest
-    ports:
-      - "5001:5001"
+    image: ${MODEL_SERVICE_IMAGE} 
+    # Poor: Services other than app-service are accessible on localhost So commented this
+    # ports:
+    #   - "5001:5001"
     restart: on-failure
+
+    # listening port of the model-service can be conﬁgured through an ENV variable
+    volumes:
+      - model_service_data:/app/models
+      - model_service_data:/app/bow
+    environment:
+      - PORT=${MODEL_SERVICE_CONTAINER_PORT}
+
+
+volumes:
+  model_service_data:
+  app_data:
+
+  # secrets:
+  #   my_secret:
+  #     file: ./my_secret.txt
