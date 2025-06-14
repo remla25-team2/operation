@@ -158,6 +158,8 @@ Created PR: https://github.com/remla25-team2/operation/pull/16 (related to A3)
 Approved PR: https://github.com/remla25-team2/lib-version/pull/12
 
 --**Blommestijn, Marvin**--
+Created PR: https://github.com/remla25-team2/lib-version/pull/13
+Approved PR: https://github.com/remla25-team2/operation/pull/17
 
 -- **Daptardar, Akshay**--
 
