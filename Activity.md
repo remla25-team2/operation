@@ -151,6 +151,10 @@ Approved PR:
 
 --**Kravcevs, Ivans**--
 
+Created PR: https://github.com/remla25-team2/operation/pull/17 (related to A5)
+
+Approved PR: https://github.com/remla25-team2/operation/pull/18
+
 --**Mangos, Angelos**--
 
 Created PR: https://github.com/remla25-team2/operation/pull/16 (related to A3)
