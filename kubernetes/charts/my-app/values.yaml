@@ -18,6 +18,10 @@ modelService:
     tag: latest
   service:
     port: 5001
+  hostPathVolume: 
+    modelPath: /mnt/shared/model-service/models
+    bowPath: /mnt/shared/model-service/bow
+
 
 experiment:
   enabled: false
@@ -32,6 +36,9 @@ experiment:
       image:
         repository: ghcr.io/remla25-team2/app
         tag: v0.2.1  # Experiment version
+      modelImage:
+        repository: ghcr.io/remla25-team2/model-service
+        tag: v0.2.0
 
 
 config:
