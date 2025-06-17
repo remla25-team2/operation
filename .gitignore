@@ -32,7 +32,6 @@ roles/
 
 # Local environment files
 .env
-.env.*
 
 # SSH keys (if generated locally)
 *.pem

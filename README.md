@@ -2,53 +2,22 @@
 
 ## Application start
 
-The application is Dockerized. Make sure you have Docker up and running. Application can be started with:
+The application is Dockerized. Make sure you have Docker up and running. 
+
+You need to have `.env` file with environment variables for docker. You can copy contents of `.env.example` to your `.env` file.
+
+After creation of environment variables, application can be started with:
 ```
 docker-compose up --build
 ```
 
 The application frontend can be accessed at ```localhost:5000``` url.
 
-You can also runt the Vagrant Kubernetes setup through:
+You can also run the Vagrant Kubernetes setup through:
 ```
 vagrant up
 ```
 
-
-## Repositories
-
-- **Operation**  
-  - Repo link: https://github.com/remla25-team2/operation/
-  - A2 tag: https://github.com/remla25-team2/operation/releases/tag/a2
-  - A3 tag: https://github.com/remla25-team2/operation/releases/tag/a3
-  - A5 tag: https://github.com/remla25-team2/operation/releases/tag/a5
-  
-- **App**  
-  - Repo link: https://github.com/remla25-team2/app/
-  - A1 tag: https://github.com/remla25-team2/app/releases/tag/a1
-  - A3 tag: https://github.com/remla25-team2/app/releases/tag/a3
-  - A5 tag: https://github.com/remla25-team2/app/releases/tag/a5
-
-- **Model-Service**  
-  - Repo link: https://github.com/remla25-team2/model-service/  
-  - A1 tag: https://github.com/remla25-team2/model-service/releases/tag/a1
-  - A5 tag: https://github.com/remla25-team2/model-service/releases/tag/a5
-  
-- **Model-Training**  
-  - Repo link: https://github.com/remla25-team2/model-training/  
-  - A1 tag: https://github.com/remla25-team2/model-training/releases/tag/a1
-  - A4 tag: https://github.com/remla25-team2/model-training/releases/tag/a4
-  - A5 tag: https://github.com/remla25-team2/model-training/releases/tag/a5
-  
-- **lib-ml**  
-  - Repo link: https://github.com/remla25-team2/lib-ml/ 
-  - A1 tag: https://github.com/remla25-team2/lib-ml/releases/tag/a1
-  
-- **lib-version**  
-  - Repo link: https://github.com/remla25-team2/lib-version/  
-  - A1 tag: https://github.com/remla25-team2/lib-version/releases/tag/a1
-  - A2 tag: https://github.com/remla25-team2/lib-version/releases/tag/a2
-  
 ### Comments for A1
 
 ### Comments for A2
@@ -85,4 +54,39 @@ In case finalization.yml setup does not work:
 
 ### Comments for A5
 
-The new experiment dashboards should be automatically imported. Documentation is not done yet nor the additional use case.
+The new experiment dashboards should be automatically imported.
+
+
+## Repositories
+
+- **Operation**  
+  - Repo link: https://github.com/remla25-team2/operation/
+  - A2 tag: https://github.com/remla25-team2/operation/releases/tag/a2
+  - A3 tag: https://github.com/remla25-team2/operation/releases/tag/a3
+  - A5 tag: https://github.com/remla25-team2/operation/releases/tag/a5
+  
+- **App**  
+  - Repo link: https://github.com/remla25-team2/app/
+  - A1 tag: https://github.com/remla25-team2/app/releases/tag/a1
+  - A3 tag: https://github.com/remla25-team2/app/releases/tag/a3
+  - A5 tag: https://github.com/remla25-team2/app/releases/tag/a5
+
+- **Model-Service**  
+  - Repo link: https://github.com/remla25-team2/model-service/  
+  - A1 tag: https://github.com/remla25-team2/model-service/releases/tag/a1
+  - A5 tag: https://github.com/remla25-team2/model-service/releases/tag/a5
+  
+- **Model-Training**  
+  - Repo link: https://github.com/remla25-team2/model-training/  
+  - A1 tag: https://github.com/remla25-team2/model-training/releases/tag/a1
+  - A4 tag: https://github.com/remla25-team2/model-training/releases/tag/a4
+  - A5 tag: https://github.com/remla25-team2/model-training/releases/tag/a5
+  
+- **lib-ml**  
+  - Repo link: https://github.com/remla25-team2/lib-ml/ 
+  - A1 tag: https://github.com/remla25-team2/lib-ml/releases/tag/a1
+  
+- **lib-version**  
+  - Repo link: https://github.com/remla25-team2/lib-version/  
+  - A1 tag: https://github.com/remla25-team2/lib-version/releases/tag/a1
+  - A2 tag: https://github.com/remla25-team2/lib-version/releases/tag/a2
