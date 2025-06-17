@@ -172,3 +172,30 @@ Approved PR: https://github.com/remla25-team2/operation/pull/17
 Created PR: https://github.com/remla25-team2/model-training/pull/15
 
 Approved PR: https://github.com/remla25-team2/operation/pull/15
+
+## W9
+
+--**Kravcevs, Ivans**--
+
+Created PR:
+
+Approved PR:
+
+--**Mangos, Angelos**--
+
+Created PR:
+
+Approved PR:
+
+--**Blommestijn, Marvin**--
+
+Created PR: https://github.com/remla25-team2/operation/pull/19 (related to A5)
+
+Approved PR: 
+
+-- **Daptardar, Akshay**--
+
+Created PR:
+
+Approved PR:
+
