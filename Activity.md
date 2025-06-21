@@ -185,7 +185,7 @@ Approved PR:
 
 Created PR:
 
-Approved PR:
+Approved PR: https://github.com/remla25-team2/model-training/pull/18
 
 --**Blommestijn, Marvin**--
 
