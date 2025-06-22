@@ -177,9 +177,9 @@ Approved PR: https://github.com/remla25-team2/operation/pull/15
 
 --**Kravcevs, Ivans**--
 
-Created PR:
+Created PR: https://github.com/remla25-team2/model-training/pull/18 (related to A4)
 
-Approved PR:
+Approved PR: https://github.com/remla25-team2/app/pull/25
 
 --**Mangos, Angelos**--
 
