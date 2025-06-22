@@ -139,7 +139,7 @@ Approved PR: https://github.com/remla25-team2/operation/pull/12
 
 Created PR: https://github.com/remla25-team2/model-training/pull/11 (related to A4)
 
-Approved PR:  https://github.com/remla25-team2/app/pull/21
+Approved PR:  https://github.com/remla25-team2/app/pull/21 
 
 -- **Daptardar, Akshay**--
 
@@ -191,7 +191,7 @@ Approved PR: https://github.com/remla25-team2/model-training/pull/18
 
 Created PR: https://github.com/remla25-team2/operation/pull/19 (related to A5)
 
-Approved PR: 
+Approved PR: https://github.com/remla25-team2/operation/pull/21 (related to A3)
 
 -- **Daptardar, Akshay**--
 
