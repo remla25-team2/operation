@@ -131,7 +131,7 @@
       delay: 10
       until: wait_result.rc == 0
 
-   - name: Add Kubernetes Dashboard Helm repository
+    - name: Add Kubernetes Dashboard Helm repository
       become_user: vagrant
       ansible.builtin.command: helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
 
