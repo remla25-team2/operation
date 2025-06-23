@@ -40,3 +40,14 @@ config:
 ingress:
   host: "app.local"
 
+
+rateLimit:
+  unit: minute
+  requests_per_unit: 10
+  service:
+    name: ratelimit
+    port: 8081
+    containerPort: 8081
+  image:
+    repository: envoyproxy/ratelimit
+    tag: v1.4.0
