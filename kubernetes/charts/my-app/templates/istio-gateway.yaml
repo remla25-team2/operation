@@ -1,6 +1,6 @@
 apiVersion: networking.istio.io/v1beta1
 kind: Gateway
-metadata: 
+metadata:
   name:
     {{ include "my-app.fullname" . }}-gateway
   labels:
@@ -13,7 +13,7 @@ spec:
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
-metadata: 
+metadata:
   name: {{ include "my-app.fullname" . }}-virtualservice
   labels:
     {{- include "my-app.labels" . | nindent 4 }}
@@ -24,12 +24,12 @@ spec:
   - match:
     - uri: { prefix: / }
     route:
-    - destination: 
+    - destination:
         host: {{ include "my-app.fullname" . }}-app
         subset: v1
       weight: {{ .Values.experiment.versions.v1.weight | default 100 }}
     {{- if .Values.experiment.enabled }}
-    - destination: 
+    - destination:
         host: {{ include "my-app.fullname" . }}-app
         subset: v2
       weight: {{ .Values.experiment.versions.v2.weight | default 0 }}
