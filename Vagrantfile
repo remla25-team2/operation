@@ -12,6 +12,20 @@ ALL_HOSTS << { name: "ctrl", ip: "#{BASE_IP}100" }
   ALL_HOSTS << { name: "node-#{i}", ip: "#{BASE_IP}#{100 + i}" }
 end
 
+File.open("provision/inventory.cfg", "w") do |f|
+  f.puts "[ctrl]"
+  f.puts "ctrl ansible_host=#{BASE_IP}100 ansible_user=vagrant ansible_ssh_private_key_file=#{File.expand_path('.vagrant/machines/ctrl/virtualbox/private_key')}"
+  f.puts "\n[nodes]"
+  (1..NODE_COUNT).each do |i|
+    name = "node-#{i}"
+    ip = "#{BASE_IP}#{100 + i}"
+    key_path = File.expand_path(".vagrant/machines/#{name}/virtualbox/private_key")
+    f.puts "#{name} ansible_host=#{ip} ansible_user=vagrant ansible_ssh_private_key_file=#{key_path}"
+  end
+  f.puts "\n[all:vars]\nansible_python_interpreter=/usr/bin/python3"
+end
+
+
 Vagrant.configure("2") do |config|
   config.vm.box = "bento/ubuntu-24.04"
   config.vm.box_version = "202502.21.0"
@@ -23,6 +37,7 @@ Vagrant.configure("2") do |config|
   common_general_ansible_config = Proc.new do |ansible|
     ansible.compatibility_mode = "2.0"
     ansible.playbook = "provision/general.yml"
+    ansible.inventory_path = "provision/inventory.cfg"
     ansible.extra_vars = {
       all_cluster_hosts: ALL_HOSTS
     }
@@ -43,6 +58,7 @@ Vagrant.configure("2") do |config|
     ctrl.vm.provision "ctrl", type: "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.playbook = "provision/ctrl.yml"
+     ansible.inventory_path = "provision/inventory.cfg"
     end
   end
 
@@ -62,6 +78,7 @@ Vagrant.configure("2") do |config|
       node.vm.provision 'node', type: 'ansible' do |ansible|
         ansible.compatibility_mode = "2.0"
         ansible.playbook = "provision/node.yml"
+         ansible.inventory_path = "provision/inventory.cfg"
       end
     end
   end
