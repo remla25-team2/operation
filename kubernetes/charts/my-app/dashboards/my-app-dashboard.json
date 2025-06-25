@@ -75,6 +75,35 @@
           "refId": "A"
         }
       ]
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      },
+      "id": 5,
+      "targets": [
+        {
+          "expr": "sum(rate(prediction_feedback_total{version=\"v1\"}[5m]))",
+          "legendFormat": "v1 - Overall Feedback Rate",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(prediction_feedback_total{version=\"v2\"}[5m]))",
+          "legendFormat": "v2 - Overall Feedback Rate",
+          "refId": "B"
+        }
+      ],
+      "title": "Overall Feedback Rate by Version",
+      "type": "timeseries"
     }
   ],
   "time": {
