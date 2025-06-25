@@ -26,7 +26,7 @@ experiment:
       weight: 70
       image:
         repository: ghcr.io/remla25-team2/app
-        tag: 0.1.6  # Baseline version
+        tag: 0.2.1  # Baseline version
     v2:
       weight: 30
       image:
@@ -43,7 +43,7 @@ ingress:
 
 rateLimit:
   unit: minute
-  requests_per_unit: 50
+  requests_per_unit: 200
   service:
     name: ratelimit
     port: 8081

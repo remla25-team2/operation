@@ -319,6 +319,64 @@
       ],
       "title": "Error Rate Comparison",
       "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 40
+      },
+      "id": 11,
+      "targets": [
+        {
+          "expr": "sum(rate(model_service_errors_total{version=\"v1\"}[5m])) by (error_type)",
+          "legendFormat": "v1 - {{error_type}}",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(model_service_errors_total{version=\"v2\"}[5m])) by (error_type)",
+          "legendFormat": "v2 - {{error_type}}",
+          "refId": "B"
+        }
+      ],
+      "title": "Model Service Errors by Version",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 40
+      },
+      "id": 12,
+      "targets": [
+        {
+          "expr": "sum(rate(model_service_warnings_total{version=\"v1\"}[5m])) by (warning_type)",
+          "legendFormat": "v1 - {{warning_type}}",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(model_service_warnings_total{version=\"v2\"}[5m])) by (warning_type)",
+          "legendFormat": "v2 - {{warning_type}}",
+          "refId": "B"
+        }
+      ],
+      "title": "Model Service Warnings by Version",
+      "type": "timeseries"
     }
   ],
   "tags": ["experiment", "ab-testing", "sentiment-analysis"],
