@@ -154,7 +154,7 @@
       "id": 5,
       "targets": [
         {
-          "expr": "sum(rate(http_requests_total{exported_endpoint=\"/sentiment\"}[5m])) by (version)",
+          "expr": "sum(rate(http_requests_total[5m])) by (version)",
           "legendFormat": "{{version}}",
           "refId": "A"
         }
@@ -215,12 +215,12 @@
       "id": 7,
       "targets": [
         {
-          "expr": "rate(prediction_feedback_total{user_feedback=\"incorrect\", version=\"v1\"}[5m]) / sum(rate(prediction_feedback_total{version=\"v1\"}[5m]))",
+          "expr": "sum(rate(prediction_feedback_total{user_feedback=\"incorrect\", version=\"v1\"}[5m])) / sum(rate(prediction_feedback_total{version=\"v1\"}[5m]))",
           "legendFormat": "v1 - Incorrect Rate %",
           "refId": "A"
         },
         {
-          "expr": "rate(prediction_feedback_total{user_feedback=\"incorrect\", version=\"v2\"}[5m]) / sum(rate(prediction_feedback_total{version=\"v2\"}[5m]))",
+          "expr": "sum(rate(prediction_feedback_total{user_feedback=\"incorrect\", version=\"v2\"}[5m])) / sum(rate(prediction_feedback_total{version=\"v2\"}[5m]))",
           "legendFormat": "v2 - Incorrect Rate %",
           "refId": "B"
         }

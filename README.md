@@ -30,6 +30,7 @@ All the steps are implemenented and works perfectly on Linux. Windows might have
  - Then export the kube config: ```export KUBECONFIG=~/operation-kubeconfig```
  - **Create required secrets**: ```./create_secrets.sh```
  - ```helm install my-app ./kubernetes/charts/my-app```
+ - Or if it exists already: ```helm upgrade my-app ./kubernetes/charts/my-app```
  - To check that they are running;   ```kubectl get pods -n monitoring```
  - To run Grafana in the UI: ```kubectl --namespace monitoring port-forward svc/prometheus-operator-grafana 3000:80``` and then available at http://localhost:3000
  - To run Prometheus in the UI: ```kubectl --namespace monitoring port-forward svc/prometheus-operated 9090:9090``` and then available at http://localhost:9090
