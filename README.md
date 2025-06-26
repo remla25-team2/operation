@@ -1,4 +1,20 @@
-# Operation
+# REMLA25-Team2, Operation
+
+This project consists of the following repositories
+
+* **[app](https://github.com/remla25-team2/app)**: 
+* **[model-service](https://github.com/remla25-team2/model-service)**: 
+* **[model-training](https://github.com/remla25-team2/model-training)**: 
+* **[lib-ml](https://github.com/remla25-team2/lib-ml)**: 
+* **[lib-version](https://github.com/remla25-team2/lib-version)**: 
+* **[operation](https://github.com/remla25-team2/operation)**: 
+
+## App
+
+The application has a simple interface, where the user can type in their prompt in the text field at the top and receive the sentiment prediction below. Additionally there is the option of rating the veracity of the prediction so that the dataset can be augmented with new samples to train on.
+
+![alt text](docs/images/screenshot.png)
+
 
 ## Application start
 
@@ -17,13 +33,6 @@ You can also run the Vagrant Kubernetes setup through:
 ```
 vagrant up
 ```
-
-### Comments for A1
-
-### Comments for A2
-All the steps are implemenented and works perfectly on Linux. Windows might have some problems due to Virtualbox network interface not cooperating well with WSL2/Vagrant for the Kubernets API server.
-
-### Comments for A3
  - ```vagrant up --provision```
  - ```ansible-playbook -u vagrant -i 192.168.56.100, provision/finalization.yml -e "ansible_ssh_private_key_file=.vagrant/machines/ctrl/virtualbox/private_key"```
  - Copy config from ctrl to local machine: ```vagrant ssh ctrl -c 'cat /home/vagrant/.kube/config' > ~/operation-kubeconfig```
@@ -50,8 +59,6 @@ In case finalization.yml setup does not work:
  - ```ssh-copy-id vagrant@192.168.56.100```
  - Use the path to your default ssh key to run the command
 
-### Comments for A4
-
 ## DVC setup
 This repository is using Data Version Control with remote storage. To pick files from remote storage do:
 
@@ -69,10 +76,6 @@ To launch training pipeline:
 To check model metrics:
 - ```dvc exp show --no-pager``` will show the model accuracy, precision and recall
 More details can be found in the readme on model-training repo: https://github.com/remla25-team2/model-training/edit/main/README.md
-### Comments for A5
-
-The new experiment dashboards should be automatically imported.
-
 
 ## Repositories
 
