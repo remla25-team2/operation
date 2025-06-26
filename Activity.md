@@ -207,3 +207,9 @@ Approved PR: https://github.com/remla25-team2/operation/pull/19#pullrequestrevie
 Created PR: https://github.com/remla25-team2/operation/pull/30
 
 Approved PR:
+
+-- **Kravcevs, Ivans**--
+
+Created PR: https://github.com/remla25-team2/operation/pull/22
+
+Approved PR: https://github.com/remla25-team2/lib-ml/pull/8
