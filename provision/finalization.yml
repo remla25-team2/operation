@@ -232,12 +232,18 @@
       become_user: vagrant
       ansible.builtin.command: kubectl apply -f /tmp/k8s-dashboard-ingress.yml
 
-    - name: Download Istio 1.25.2
+    - name: Download Istio 1.25.2 (with retries and timeout)
       become_user: vagrant
       ansible.builtin.get_url:
         url: https://github.com/istio/istio/releases/download/1.25.2/istio-1.25.2-linux-amd64.tar.gz
         dest: /home/vagrant/istio-1.25.2-linux-amd64.tar.gz
         mode: "0644"
+        timeout: 120            # seconds
+        force: no               # only download if not already there
+      register: download_result
+      retries: 3
+      delay: 10
+      until: download_result is succeeded
 
     - name: Unpack Istio tar.gz
       become_user: vagrant
@@ -343,11 +349,15 @@
           --create-namespace
           --values /tmp/prometheus-values.yaml
       environment:
-        KUBECONFIG: "/home/vagrant/.kube/config" # Ensure this path is correct on your Vagrant VM
+        KUBECONFIG: "/home/vagrant/.kube/config"
       register: prometheus_install_result
+      retries: 5
+      delay: 15
+      until: prometheus_install_result.rc == 0 or
+            "'another operation (install/upgrade/rollback) is in progress'" not in prometheus_install_result.stderr
       failed_when:
         - prometheus_install_result.rc != 0
-        - "'already exists' not in prometheus_install_result.stderr" # Adjust this based on actual error message if needed
+        - "'already exists' not in prometheus_install_result.stderr"
 
 # ansible-playbook -u vagrant -i 172.30.144.1:2222, provision/finalization.yml -e "ansible_ssh_private_key_file=$(pwd)/.vagrant/machines/ctrl/virtualbox/private_key"
 # Note: To access the dashboard and services with domain names, add these entries to your local /etc/hosts file:
