@@ -20,18 +20,18 @@ modelService:
     port: 5001
 
 experiment:
-  enabled: false
+  enabled: true
   versions:
     v1:
       weight: 90
       image:
         repository: ghcr.io/remla25-team2/app
-        tag: v0.1.5  # Baseline version
+        tag: 0.2.2  # Baseline version
     v2:
       weight: 10
       image:
         repository: ghcr.io/remla25-team2/app
-        tag: v0.2.1  # Experiment version
+        tag: 0.2.3
 
 
 config:
@@ -43,7 +43,7 @@ ingress:
 
 rateLimit:
   unit: minute
-  requests_per_unit: 10
+  requests_per_unit: 200
   service:
     name: ratelimit
     port: 8081

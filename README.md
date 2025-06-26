@@ -28,12 +28,14 @@ All the steps are implemenented and works perfectly on Linux. Windows might have
  - ```ansible-playbook -u vagrant -i 192.168.56.100, provision/finalization.yml -e "ansible_ssh_private_key_file=.vagrant/machines/ctrl/virtualbox/private_key"```
  - Copy config from ctrl to local machine: ```vagrant ssh ctrl -c 'cat /home/vagrant/.kube/config' > ~/operation-kubeconfig```
  - Then export the kube config: ```export KUBECONFIG=~/operation-kubeconfig```
- - **Create required secrets**: ```./create-secrets.sh```
+ - **Create required secrets**: ```./create_secrets.sh```
  - ```helm install my-app ./kubernetes/charts/my-app```
+ - Or if it exists already: ```helm upgrade my-app ./kubernetes/charts/my-app```
  - To check that they are running;   ```kubectl get pods -n monitoring```
  - To run Grafana in the UI: ```kubectl --namespace monitoring port-forward svc/prometheus-operator-grafana 3000:80``` and then available at http://localhost:3000
  - To run Prometheus in the UI: ```kubectl --namespace monitoring port-forward svc/prometheus-operated 9090:9090``` and then available at http://localhost:9090
-   Log in with username: admin and password: (the one you set when running create-secrets.sh)
+   Log in with username: admin and password: (the one you set when running create_secrets.sh)
+ - Access the app through (http://192.168.56.91).
 Grafana sidecar automatically imports the dashboard ConfigMap so no manual JSON import.
 
 ## Required Secrets
