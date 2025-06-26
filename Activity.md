@@ -195,7 +195,15 @@ Approved PR: https://github.com/remla25-team2/operation/pull/21 (related to A3)
 
 -- **Daptardar, Akshay**--
 
-Created PR: https://github.com/remla25-team2/operation/pull/21 (related to A3
+Created PR: https://github.com/remla25-team2/operation/pull/21 (related to A3)
 
 Approved PR: https://github.com/remla25-team2/operation/pull/19#pullrequestreview-2948327496
 
+
+## W10
+
+-- **Daptardar, Akshay**--
+
+Created PR: https://github.com/remla25-team2/operation/pull/30
+
+Approved PR:
