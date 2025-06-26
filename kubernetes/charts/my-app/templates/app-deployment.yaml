@@ -1,5 +1,5 @@
 {{- if .Values.experiment.enabled }}
-# v1 Deployment (Baseline)
+# v1 Deployment (Baseline - with color)
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -38,7 +38,7 @@ spec:
             - name: MODEL_SERVICE_URL
               value: {{ .Values.app.modelServiceUrl | quote }}
             - name: VERSION
-              value: "v1"
+              value: "v1-color" # Set specific version for frontend JS logic
             - name: MESSAGE
               valueFrom:
                 configMapKeyRef:
@@ -58,7 +58,7 @@ spec:
             path: {{ .Values.app.hostPathVolume.path }}
             type: DirectoryOrCreate
 ---
-# v2 Deployment (Experiment)
+# v2 Deployment (Experiment - no color)
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -97,7 +97,7 @@ spec:
             - name: MODEL_SERVICE_URL
               value: {{ .Values.app.modelServiceUrl | quote }}
             - name: VERSION
-              value: "v2"
+              value: "v2-nocolor" # Set specific version for frontend JS logic
             - name: MESSAGE
               valueFrom:
                 configMapKeyRef:
