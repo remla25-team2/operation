@@ -52,12 +52,16 @@ This has multiple negative effects:
 A platform for managing the machine learning lifecycle would solve this problem. MLflow is an open-source platform that helps manage the end-to-end machine learning lifecycle. It provides tools for tracking experiments (logging parameters, metrics, and artifacts), packaging models for reproducible runs, and deploying them to production. MLflow includes a user-friendly UI for visualizing and comparing runs, as well as a model registry to manage different model versions. It supports integration with popular ML libraries and can be run locally or hosted in the cloud, making it a flexible solution for experiment tracking and model management.
 
 
+DVC and MLflow complement each other by addressing different aspects of the machine learning lifecycle in parallel. DVC focuses on data and model versioning, ensuring that large assets like datasets and trained models are efficiently tracked and shared through external storage remotes. Meanwhile, MLflow manages experiment tracking, logging parameters, metrics, and artifacts during training runs.
+
+![How DVC and MLflow work in parallel](images/extension_chart.png)
+
 ### How to Measure Improvement
 
 The improvement offered by integrating MLflow is the simplification and streamlining of large collaborative ML Projects. It mainly offers time savings and ease to developers in ML Model training and deployment. Therefore it's impact can be best measured through the difference in time taken for a various tasks that developers undertake with and without MLFlow. 
 
 
-### 📊 Measuring MLflow's Impact: Before vs After Integration
+### Measuring MLflow's Impact: Before vs After Integration
 
 | **Aspect**                    | **Metric**                                         | **How to Measure**                                                                 |
 |------------------------------|---------------------------------------------------|------------------------------------------------------------------------------------|
@@ -75,3 +79,8 @@ MLflow is general-purpose and widely applicable across many machine learning wor
 It is framework-agnostic—meaning it works with scikit-learn, TensorFlow, PyTorch, HuggingFace and others. It supports any language that can make HTTP requests (official APIs exist for Python, R, Java, and REST). MLflow’s modular architecture (Tracking, Projects, Models, Registry) allows teams to adopt only the components they need.
 
 
+### Resources
+
+- [Use MLflow and DVC for Open-Source Reproducible Machine Learning](https://towardsdatascience.com/use-mlflow-and-dvc-for-open-source-reproducible-machine-learning-2ab8c0678a94)
+- [Model and Data Versioning: An Introduction to MLflow and DVC (Walmart Global Tech)](https://medium.com/walmartglobaltech/model-and-data-versioning-an-introduction-to-mlflow-and-dvc-260347cd0f6e)
+- [Simple Model Experiment Tracking (NB Data)](https://www.nb-data.com/p/simple-model-experiment-tracking)
