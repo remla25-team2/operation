@@ -1,15 +1,27 @@
 # Confidence-Threshold Highlighting Experiment
 
-![Experiment Dashboard](../kubernetes/charts/my-app/dashboards/experiment-dashboard.json)
+This document details an A/B testing experiment designed to evaluate the impact of presenting users with confidence warnings for low-confidence predictions. We compare two versions of our application: `v1` (the control group, without warnings) and `v2` (the experimental group, which displays warnings for predictions with confidence below 0.7).
 
+<!-- Please include a screenshot of your Grafana "A/B Testing Experiment Dashboard" here once the experiment is run. -->
+<!-- Example: ![Experiment Dashboard Screenshot](/path/to/your/actual/screenshot.png) -->
+
+## Table of Contents
+1. [Hypothesis](#hypothesis)
+2. [Metrics to measure the results of the experiment](#metrics-to-measure-the-results-of-the-experiment)
+3. [Decision Process](#decision-process)
+    * [Data Available (from Grafana)](#data-available-from-grafana)
+    * [Concrete Decision Margins](#concrete-decision-margins)
+4. [Results](#results)
+    * [Experiment Configuration](#experiment-configuration)
+    * [Implementation Details](#implementation-details)
+
+---
 
 ## Hypothesis:
 
 **Primary Hypothesis**: Presenting users with confidence warnings for low-confidence predictions (version `v2`) will lead to a **decrease in the rate of incorrect user feedback** and an **increase in user correction rate** compared to not showing warnings (version `v1`). This is expected to improve user understanding of model limitations and potentially lead to better model performance over time due to more accurate feedback data.
 
 **Null Hypothesis**: Presenting confidence warnings will have no significant impact on the rate of incorrect user feedback or user correction rates.
-
-
 
 ## Metrics to measure the results of the experiment:
 The following metrics are collected via Prometheus and visualized in Grafana to rigorously evaluate the experiment's outcome. Each metric is tailored to provide specific insights into the user experience and model behavior under both experimental conditions.
@@ -69,18 +81,18 @@ The following metrics are collected via Prometheus and visualized in Grafana to 
     *   `sum(rate(model_service_warnings_total{version="v2"}[5m])) by (warning_type)`
     *   *Purpose*: These metrics provide deep insight into the health and stability of the model service for each version, allowing us to pinpoint any issues directly attributable to the model itself or its integration.
 
-## Decision process:
+## Decision Process:
 The experiment aims to validate the hypothesis that confidence highlighting improves user interactions and prediction quality. The decision to promote `v2` (with confidence highlighting) or revert to `v1` (baseline) will be made based on a 5-minute observation period, utilizing the real-time Prometheus metrics visualized in the dedicated Grafana dashboard.
 
 ### Data available (from Grafana)
 
-The experiment leverages the comprehensive monitoring infrastructure already in place:
+The experiment leverages the comprehensive monitoring infrastructure already in place, with custom Grafana dashboards (specifically the "A/B Testing Experiment Dashboard" imported via `grafana-dashboard-configmap.yaml`) providing real-time insights into the following key data points:
 
-1. **Prediction Confidence Distribution** - Available via [`prediction_confidence_distribution_bucket`](kubernetes/charts/my-app/dashboards/experiment-dashboard.json) metric
-2. **User Feedback Tracking** - Monitored through [`prediction_feedback_total`](kubernetes/charts/my-app/templates/servicemonitor.yaml) 
-3. **Correction Patterns** - Tracked via [`user_corrections_total`](kubernetes/charts/my-app/dashboards/experiment-dashboard.json)
-4. **Traffic Distribution** - A/B testing infrastructure from [`istio-gateway.yaml`](kubernetes/charts/my-app/templates/istio-gateway.yaml)
-5. **Real-time Dashboards** - Custom Grafana dashboards automatically imported via [`grafana-dashboard-configmap.yaml`](kubernetes/charts/my-app/templates/grafana-dashboard-configmap.yaml)
+1.  **Prediction Confidence Distribution** - Available via [`prediction_confidence_distribution_bucket`](kubernetes/charts/my-app/dashboards/experiment-dashboard.json) metric. This visualizes how often low-confidence predictions occur for each version, ensuring the "warning" feature is active in `v2`.
+2.  **User Feedback Tracking** - Monitored through [`prediction_feedback_total`](kubernetes/charts/my-app/templates/servicemonitor.yaml). This clearly shows the rates of `incorrect` feedback for both versions, enabling a direct comparison for our primary success criterion.
+3.  **Correction Patterns** - Tracked via [`user_corrections_total`](kubernetes/charts/my-app/dashboards/experiment-dashboard.json). This graphs the frequency of user corrections, allowing us to see if `v2` prompts more user corrections.
+4.  **Traffic Distribution** - A/B testing infrastructure from [`istio-gateway.yaml`](kubernetes/charts/my-app/templates/istio-gateway.yaml). The dashboard includes a pie chart confirming the actual traffic split (70% to `v1`, 30% to `v2`) as configured by the Istio `VirtualService`.
+5.  **Real-time Dashboards** - Custom Grafana dashboards automatically imported via [`grafana-dashboard-configmap.yaml`](kubernetes/charts/my-app/templates/grafana-dashboard-configmap.yaml). All specified metrics are presented in time-series graphs and stat panels, enabling immediate assessment of the experiment's impact.
 
 ### Concrete decision margins
 
@@ -108,18 +120,18 @@ If any of these failure criteria are met, `v2` will be deemed unsuccessful, and 
 *   `v1` (Control): 70% - No confidence warnings
 *   `v2` (Experiment): 30% - Show warnings when confidence < 0.7
 
-## 
-
 ## Results
 
-
+**Screenshot of Experiment Dashboard:**
+<!-- Insert your actual screenshot here -->
+![Experiment Dashboard Screenshot](/path/to/your/actual/screenshot.png)
 
 ### Experiment Configuration
-- **Duration**: 5 min
-- **Traffic Split**: 70/30 (control/experiment)
-- **Monitoring**: Real-time via [Prometheus alerts](kubernetes/charts/my-app/templates/custom_prometheus_rules.yaml)
+-   **Duration**: 5 minutes (for decision-making snapshot)
+-   **Traffic Split**: 70/30 (control/experiment)
+-   **Monitoring**: Real-time via [Prometheus alerts](kubernetes/charts/my-app/templates/custom_prometheus_rules.yaml) and the dedicated Grafana dashboard.
 
 ### Implementation Details
-- Experiment managed via [Istio traffic routing](kubernetes/charts/my-app/templates/istio-gateway.yaml)
-- Metrics collected through [ServiceMonitor](kubernetes/charts/my-app/templates/servicemonitor.yaml)
-- Dashboards available at `http://localhost:3000` (Grafana) after port-forwarding
+-   Experiment managed via [Istio traffic routing](kubernetes/charts/my-app/templates/istio-gateway.yaml), using `VirtualService` and `DestinationRule` for weighted routing and consistent hashing.
+-   Metrics collected through [ServiceMonitor](kubernetes/charts/my-app/templates/servicemonitor.yaml) which scrapes `/metrics` endpoint on the `app` service.
+-   Dashboards are available at `http://localhost:3000` (Grafana) after port-forwarding. Log in with username: `admin` and password: (the one you set when running `create_secrets.sh`).
