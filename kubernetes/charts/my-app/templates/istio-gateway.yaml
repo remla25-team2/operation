@@ -21,6 +21,31 @@ spec:
   gateways: [ {{ include "my-app.fullname" . }}-gateway ]
   hosts: [ "*" ]
   http:
+  # Route users with v1 cookie to v1
+  - match:
+    - uri: { prefix: / }
+      headers:
+        cookie:
+          regex: ".*version=v1.*"
+    route:
+    - destination:
+        host: {{ include "my-app.fullname" . }}-app
+        subset: v1
+      weight: 100
+  {{- if .Values.experiment.enabled }}
+  # Route users with v2 cookie to v2
+  - match:
+    - uri: { prefix: / }
+      headers:
+        cookie:
+          regex: ".*version=v2.*"
+    route:
+    - destination:
+        host: {{ include "my-app.fullname" . }}-app
+        subset: v2
+      weight: 100
+  {{- end }}
+  # Default route for new users (without version cookie)
   - match:
     - uri: { prefix: / }
     route:
@@ -28,25 +53,28 @@ spec:
         host: {{ include "my-app.fullname" . }}-app
         subset: v1
       weight: {{ .Values.experiment.versions.v1.weight | default 100 }}
+      headers:
+        response:
+          set:
+            Set-Cookie: "version=v1; Path=/; Max-Age=3600"
     {{- if .Values.experiment.enabled }}
     - destination:
         host: {{ include "my-app.fullname" . }}-app
         subset: v2
       weight: {{ .Values.experiment.versions.v2.weight | default 0 }}
+      headers:
+        response:
+          set:
+            Set-Cookie: "version=v2; Path=/; Max-Age=3600"
     {{- end }}
 
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
-metadata: { name: app-dr }
+metadata: 
+  name: {{ include "my-app.fullname" . }}-app-dr
 spec:
   host: {{ include "my-app.fullname" . }}-app
-  trafficPolicy:
-    loadBalancer:
-      consistentHash:
-        httpCookie:
-          name: app-session-id
-          ttl: 0s
   subsets:
   - name: v1
     labels: { version: v1 }

@@ -23,15 +23,15 @@ experiment:
   enabled: true
   versions:
     v1:
-      weight: 70
+      weight: 90
       image:
         repository: ghcr.io/remla25-team2/app
-        tag: 0.2.1  # Baseline version
+        tag: 0.2.2  # Baseline version
     v2:
-      weight: 30
+      weight: 10
       image:
         repository: ghcr.io/remla25-team2/app
-        tag: latest
+        tag: 0.2.3
 
 
 config:
