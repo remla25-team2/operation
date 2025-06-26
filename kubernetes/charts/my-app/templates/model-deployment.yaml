@@ -1,11 +1,12 @@
+{{- if .Values.experiment.enabled }}
+# v1 Deployment (Baseline Model Service)
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "my-app.fullname" . }}-model-service
-  labels:
+  name: {{ include "my-app.fullname" . }}-model-service-v1 
     {{- include "my-app.labels" . | nindent 4 }}
     app.kubernetes.io/component: model-service
-    version: v1
+    version: v1 # Label for Istio subset routing
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -16,6 +17,121 @@ spec:
   template:
     metadata:
       labels:
+        {{- include "my-app.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: model-service
+    version: v1
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "{{ .Values.modelService.service.port }}"
+    spec:
+      containers:
+        - name: model-service
+          # Use the baseline model image tag (default modelService image)
+          image: "{{ .Values.modelService.image.repository }}:{{ .Values.modelService.image.tag }}"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: {{ .Values.modelService.service.port }}
+              protocol: TCP
+          env:
+            - name: PORT
+              value: "{{ .Values.modelService.service.port }}"
+            - name: VERSION # Propagate model version for metrics/logging
+              value: "v1"
+            # Add other model service specific environment variables if needed
+          volumeMounts:
+            - name: model-data
+              mountPath: /app/models # Mount models directory
+            - name: bow-data
+              mountPath: /app/bow # Mount bow directory
+      volumes:
+        - name: model-data
+          hostPath: # Using HostPath for consistency with app chart
+            path: {{ .Values.modelService.hostPathVolume.modelPath }}
+            type: DirectoryOrCreate
+        - name: bow-data
+          hostPath: # Using HostPath for consistency with app chart
+            path: {{ .Values.modelService.hostPathVolume.bowPath }}
+            type: DirectoryOrCreate
+---
+# v2 Deployment (Experiment Model Service)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "my-app.fullname" . }}-model-service-v2
+  labels:
+    {{- include "my-app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: model-service
+    version: v2 # Label for Istio subset routing
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: model-service
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      version: v2
+  template:
+    metadata:
+      labels:
+        {{- include "my-app.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: model-service
+        version: v2
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "{{ .Values.modelService.service.port }}"
+    spec:
+      containers:
+        - name: model-service
+          # Use the experiment model image tag (define in values.yaml)
+          image: "{{ .Values.experiment.versions.v2.modelImage.repository | default .Values.modelService.image.repository }}:{{ .Values.experiment.versions.v2.modelImage.tag | default .Values.modelService.image.tag }}"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: {{ .Values.modelService.service.port }}
+              protocol: TCP
+          env:
+            - name: PORT
+              value: "{{ .Values.modelService.service.port }}"
+            - name: VERSION # Propagate model version for metrics/logging
+              value: "v2"
+            # Add other model service specific environment variables if needed
+          volumeMounts:
+            - name: model-data
+              mountPath: /app/models # Mount models directory
+            - name: bow-data
+              mountPath: /app/bow # Mount bow directory
+      volumes:
+        - name: model-data
+          hostPath: # Using HostPath for consistency with app chart
+            path: {{ .Values.modelService.hostPathVolume.modelPath }}
+            type: DirectoryOrCreate
+        - name: bow-data
+          hostPath: # Using HostPath for consistency with app chart
+            path: {{ .Values.modelService.hostPathVolume.bowPath }}
+            type: DirectoryOrCreate
+{{- else }}
+# Default Deployment (when experiment is disabled)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "my-app.fullname" . }}-model-service # Standard name
+  labels:
+    {{- include "my-app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: model-service
+    version: v1 # Ensure default deployment is labeled v1
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: model-service
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      version: v1
+  template:
+    metadata:
+      labels:
+        {{- include "my-app.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: model-service
         app.kubernetes.io/instance: {{ .Release.Name }}
         version: v1
@@ -32,3 +148,24 @@ spec:
             - name: http
               containerPort: {{ .Values.modelService.service.port }}
               protocol: TCP
+          env:
+            - name: PORT
+              value: "{{ .Values.modelService.service.port }}"
+            - name: VERSION # Propagate model version for metrics/logging
+              value: "v1"
+            # Add other model service specific environment variables if needed
+          volumeMounts:
+            - name: model-data
+              mountPath: /app/models # Mount models directory
+            - name: bow-data
+              mountPath: /app/bow # Mount bow directory
+      volumes:
+        - name: model-data
+          hostPath: # Using HostPath for consistency with app chart
+            path: {{ .Values.modelService.hostPathVolume.modelPath }}
+            type: DirectoryOrCreate
+        - name: bow-data
+          hostPath: # Using HostPath for consistency with app chart
+            path: {{ .Values.modelService.hostPathVolume.bowPath }}
+            type: DirectoryOrCreate
+{{- end }}
