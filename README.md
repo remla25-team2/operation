@@ -59,7 +59,7 @@ This repository is using Data Version Control with remote storage. To pick files
 
 - ```make requirements``` to download all requirements and dvc
 
-- dvc is set up to use Google Drive remote storage with service account access to download and process data. Please request service account credential file from the owners of the repository and add it to `.dvc/tmp/remlaproject-sa.json`. The credentials can not be made fully public because of Google Politics. Additionally, GitHub workflows are setup to use Google Drive credentials for continuous integration. 
+- dvc is set up to use Google Drive remote storage with service account access to download and process data. Please request service account credential file from the owners of the repository and add it to `model-training/.dvc/tmp/remlaproject-sa.json`. The credentials can not be made fully public because of Google Politics. Additionally, GitHub workflows are setup to use Google Drive credentials for continuous integration. 
 
 Once credentials are received: 
 -  ```dvc pull``` this will pull all training model files from the Google Drive. 
