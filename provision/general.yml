@@ -121,24 +121,6 @@
         k8s_version_suffix: "1.32.4-1.1"
       notify: Restart containerd
 
-    - name: Ensure kubeadm is installed
-      command: which kubeadm
-      register: kubeadm_path
-      changed_when: false
-      failed_when: kubeadm_path.rc != 0
-
-    - name: Ensure kubelet is installed
-      command: which kubelet
-      register: kubelet_path
-      changed_when: false
-      failed_when: kubelet_path.rc != 0
-
-    - name: Ensure kubectl is installed
-      command: which kubectl
-      register: kubectl_path
-      changed_when: false
-      failed_when: kubectl_path.rc != 0
-
     - name: Mark Kubernetes packages on hold
       ansible.builtin.command:
         cmd: apt-mark hold kubelet kubeadm kubectl
