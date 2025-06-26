@@ -137,7 +137,7 @@ We are conducting a canary (A/B) experiment to evaluate the impact of color-code
 
 ## Dashboard Example
 
-![Grafana A/B Dashboard Screenshot](images/grafana_ab_dashboard.png) <!-- Replace with your actual screenshot -->
+![Grafana A/B Dashboard Screenshot](docs/grafana_draft.jpeg) <!-- Replace with your actual screenshot -->
 
 ---
 
