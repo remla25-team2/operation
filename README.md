@@ -54,6 +54,23 @@ In case finalization.yml setup does not work:
 
 ### Comments for A4
 
+## DVC setup
+This repository is using Data Version Control with remote storage. To pick files from remote storage do:
+
+- ```make requirements``` to download all requirements and dvc
+
+- dvc is set up to use Google Drive remote storage with service account access to download and process data. Please request service account credential file from the owners of the repository and add it to `.dvc/tmp/remlaproject-sa.json`. The credentials can not be made fully public because of Google Politics. Additionally, GitHub workflows are setup to use Google Drive credentials for continuous integration. 
+
+Once credentials are received: 
+-  ```dvc pull``` this will pull all training model files from the Google Drive. 
+-  ```dvc push``` will push your changes to the model files to the remote storage if you have appropriate access.
+
+To launch training pipeline:
+- ```dvc repro``` it will launch all pipeline stages and create the missing files locally
+
+To check model metrics:
+- ```dvc exp show --no-pager``` will show the model accuracy, precision and recall
+More details can be found in the readme on model-training repo: https://github.com/remla25-team2/model-training/edit/main/README.md
 ### Comments for A5
 
 The new experiment dashboards should be automatically imported.
